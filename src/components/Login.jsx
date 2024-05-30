@@ -8,10 +8,14 @@ import linkedin from "../assets/linkedin.png";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../elements/Header";
 import Footer from "../elements/Footer";
+import api from "../Api";
 
 const Login = () => {
   const navigate = useNavigate();
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -19,6 +23,21 @@ const Login = () => {
   };
   const goBack = () => {
     navigate(-1); // This will take you back to the previous page/component
+  };
+
+  const handleLogin = async () => {
+    try {
+      const response = await api.login({
+        email,
+        password,
+      });
+      if (response.success) navigate("/my-properties");
+      else setError(response.message);
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Login failed. Please try again."
+      );
+    }
   };
 
   return (
@@ -46,6 +65,8 @@ const Login = () => {
               Tu email
             </label>
             <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Escribe tu email"
               className="rounded-md border text-black border-black p-2 sm:p-3 bg-[#eff6ff]"
             />
@@ -54,6 +75,8 @@ const Login = () => {
             </label>
             <div className="flex items-center border rounded-md border-black bg-[#eff6ff] p-1 sm:p-2">
               <TextField
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 type={showPassword ? "text" : "password"}
                 variant="standard"
                 fullWidth
@@ -66,10 +89,11 @@ const Login = () => {
                 {showPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             </div>
+            {error && <p className="text-red-500">{error}</p>}
           </div>
           <button
             className="bg-[#011B4E]  text-white font-semibold py-4  sm:px-12 rounded-3xl text-md   w-1/2  mx-auto xs:px-8"
-            onClick={() => navigate("/my-properties")}
+            onClick={handleLogin}
           >
             Inicia sesión
           </button>

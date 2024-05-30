@@ -4,11 +4,24 @@ import { IconButton, TextField } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../elements/Header";
+import api from "../Api";
 
 const Register = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showCPassword, setCShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    name: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -20,6 +33,31 @@ const Register = () => {
   const goBack = () => {
     navigate(-1); // This will take you back to the previous page/component
   };
+
+  const handleRegister = async () => {
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      const response = await api.register({
+        email: formData.email,
+        name: formData.name,
+        number: formData.phone,
+        password: formData.password,
+      });
+      console.log("message ", response);
+      if (response.success) navigate("/login");
+      else setError(response.message);
+    } catch (err) {
+      console.log("error ", err.response?.data?.message);
+      setError(
+        err.response?.data?.message || "Registration failed. Please try again."
+      );
+    }
+  };
+
   return (
     <div className="">
       <Header />
@@ -41,6 +79,9 @@ const Register = () => {
               Email
             </label>
             <input
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
               placeholder="Escribe tu email"
               className="rounded-md border text-black border-black p-2 sm:p-4 bg-[#eff6ff]"
             />
@@ -48,6 +89,9 @@ const Register = () => {
               Nombre y apellido
             </label>
             <input
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
               placeholder="Escribe tu emnombre aquí"
               className="rounded-md border text-black border-black p-2 sm:p-4 bg-[#eff6ff]"
             />
@@ -55,6 +99,9 @@ const Register = () => {
               Teléfono
             </label>
             <input
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
               placeholder="Escribe tu teléfono aquí"
               className="rounded-md border text-black border-black p-2 sm:p-4 bg-[#eff6ff]"
             />
@@ -63,7 +110,10 @@ const Register = () => {
             </label>
             <div className="flex items-center border rounded-md border-black bg-[#eff6ff] p-1 sm:p-2">
               <TextField
+                name="password"
                 type={showPassword ? "text" : "password"}
+                value={formData.password}
+                onChange={handleChange}
                 variant="standard"
                 fullWidth
                 InputProps={{
@@ -80,7 +130,10 @@ const Register = () => {
             </label>
             <div className="flex items-center border rounded-md border-black bg-[#eff6ff] p-1 sm:p-2">
               <TextField
+                name="confirmPassword"
                 type={showCPassword ? "text" : "password"}
+                value={formData.confirmPassword}
+                onChange={handleChange}
                 variant="standard"
                 fullWidth
                 InputProps={{
@@ -92,10 +145,11 @@ const Register = () => {
                 {showCPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             </div>
+            {error && <p className="text-red-500">{error}</p>}
           </div>
           <button
             className="bg-[#011B4E]  text-white font-semibold py-4 px-6 sm:px-12 rounded-3xl text-md sm:text-lg w-4/5 sm:w-1/2 lg:w-2/5 "
-            onClick={() => navigate("/login")}
+            onClick={handleRegister}
           >
             Regístrate
           </button>
