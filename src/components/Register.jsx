@@ -34,6 +34,7 @@ const Register = () => {
     navigate(-1); // This will take you back to the previous page/component
   };
 
+  //handle register
   const handleRegister = async () => {
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
