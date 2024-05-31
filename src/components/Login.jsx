@@ -32,6 +32,7 @@ const Login = () => {
         email,
         password,
       });
+      console.log(" response msg",response);
       if (response.success) navigate("/my-properties");
       else setError(response.message);
     } catch (err) {
