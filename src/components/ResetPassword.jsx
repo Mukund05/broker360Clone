@@ -1,26 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IconButton, TextField, CircularProgress } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CustomHeader from "../elements/CustomHeader";
 import Footer from "../elements/Footer";
 import api from "../Api";
 
 const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
-  const [password, setpassword] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const email = location.state?.email;
+
+  useEffect(() => {
+    if (!email) {
+      navigate("/forgot-password");
+    }
+  }, [email, navigate]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   const handleResetPassword = async () => {
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
     setLoading(true);
     setError("");
     try {
@@ -43,7 +55,8 @@ const ResetPassword = () => {
             Ingresa el código de verificación
           </span>
           <span className="text-[#6E6E70] text-lg font-semibold md:px-14 w-[80%]">
-            Ingresa el código que hemos enviado a tu correo electrónico junto con tu nueva contraseña.
+            Ingresa el código que hemos enviado a tu correo electrónico junto
+            con tu nueva contraseña.
           </span>
           <div className="flex flex-col gap-y-3 sm:w-[60%]">
             <label className="text-[#686868] flex justify-start font-bold">
@@ -52,8 +65,7 @@ const ResetPassword = () => {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Escribe tu email"
+              readOnly
               className="rounded-md border text-black border-black p-2 sm:p-4 bg-[#eff6ff]"
             />
             <label className="text-[#686868] flex justify-start font-bold">
@@ -73,12 +85,31 @@ const ResetPassword = () => {
               <TextField
                 type={showPassword ? "text" : "password"}
                 value={password}
-                onChange={(e) => setpassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 variant="standard"
                 fullWidth
                 InputProps={{
                   disableUnderline: true,
                   placeholder: "Ingresa tu nueva contraseña",
+                }}
+              />
+              <IconButton onClick={togglePasswordVisibility}>
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </div>
+            <label className="text-[#686868] flex justify-start font-bold">
+              Confirmar contraseña
+            </label>
+            <div className="flex items-center border rounded-md border-black bg-[#eff6ff] p-1 sm:p-2">
+              <TextField
+                type={showPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                variant="standard"
+                fullWidth
+                InputProps={{
+                  disableUnderline: true,
+                  placeholder: "Confirma tu nueva contraseña",
                 }}
               />
               <IconButton onClick={togglePasswordVisibility}>
@@ -92,7 +123,11 @@ const ResetPassword = () => {
             onClick={handleResetPassword}
             disabled={loading}
           >
-            {loading ? <CircularProgress size={24} color="inherit" /> : "Restablecer contraseña"}
+            {loading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Restablecer contraseña"
+            )}
           </button>
           <span className="text-[#35278C] text-sm sm:text-xl font-semibold">
             Cancelar

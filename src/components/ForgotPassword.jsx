@@ -27,7 +27,7 @@ const ForgotPassword = () => {
         email,
       });
       console.log("response msg", response);
-      if (response.success) navigate("/reset-password");
+      if (response.success)  navigate("/reset-password", { state: { email } });
       else setError(response.message);
     } catch (err) {
       setError(err.response?.data?.error || "Login failed. Please try again.");
