@@ -1,17 +1,39 @@
 import React, { useState } from "react";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import { IconButton, TextField } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { IconButton, TextField, CircularProgress } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import CustomHeader from "../elements/CustomHeader";
 import CustomFooter from "../elements/CustomFooter";
 import Footer from "../elements/Footer";
+import api from "../Api";
 
 const ForgotPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleForgotPassword = async () => {
+    setLoading(true); 
+    setError("");
+    try {
+      const response = await api.forgotPassword({
+        email,
+      });
+      console.log("response msg", response);
+      if (response.success) navigate("/reset-password");
+      else setError(response.message);
+    } catch (err) {
+      setError(err.response?.data?.error || "Login failed. Please try again.");
+    } finally {
+      setLoading(false); 
+    }
   };
 
   return (
@@ -31,15 +53,20 @@ const ForgotPassword = () => {
               Tu email
             </label>
             <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Escribe tu email"
               className="rounded-md border text-black border-black p-2 sm:p-4 bg-[#eff6ff]"
             />
           </div>
+          <span className="text-red-500 text-sm">{error}</span>
           <button
             className="bg-[#011B4E]  text-white font-semibold py-3 px-6 sm:px-10 rounded-3xl text-md sm:text-lg sm:w-[60%] "
-            onClick={() => navigate("/login")}
+            onClick={handleForgotPassword}
+            disabled={loading} // Disable button when loading
           >
-            Restablecer contraseña
+            {loading ? <CircularProgress size={24} color="inherit" /> : "Restablecer contraseña"}
           </button>
           <span className="text-[#35278C]  text-sm sm:text-xl font-semibold">
             Cancelar
