@@ -27,6 +27,7 @@ import MessageGateway from "./components/MessageGateway";
 import CancelSubscription from "./components/CancelSubscription";
 import CloneMyproperties from "./components/CloneMyproperties";
 import ResetPassword from "./components/ResetPassword";
+import CreateContact from "./components/Contact";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/register" Component={Register} />
           <Route path="/forgot-password" Component={ForgotPassword} />
           <Route path="/reset-password" Component={ResetPassword} />
+          <Route path="/contacts" Component={CreateContact} />
           <Route path="/payment-method" Component={Paymentmethod} />
           <Route path="/subscription-plans" Component={Subscription} />
           <Route path="/home" Component={Interface} />

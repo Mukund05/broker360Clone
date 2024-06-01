@@ -33,6 +33,8 @@ const Login = () => {
         password,
       });
       console.log(" response msg",response);
+      localStorage.setItem('token', response?.data?.token);
+
       if (response.success) navigate("/my-properties");
       else setError(response.message);
     } catch (err) {

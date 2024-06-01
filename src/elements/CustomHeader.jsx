@@ -5,6 +5,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Link, useNavigate } from "react-router-dom";
 import profile from "../assets/profile.png";
 import settings from "../assets/settings.png";
+import edit from "../assets/edit.png";
 import play from "../assets/play.png";
 import question from "../assets/question.png";
 import info from "../assets/info.png";
@@ -217,6 +218,15 @@ const CustomHeader = ({ index }) => {
                 </div>
               </div>
               <ul className="flex flex-col gap-y-3 text-start text-md sm:text-lg p-4">
+                <li className="flex gap-x-2 items-center ">
+                  <img src={edit} className="h-4 w-4" />{" "}
+                  <span
+                    className="font-semibold text-[#6E6E70] cursor-pointer"
+                    onClick={() => navigate("/contacts")}
+                  >
+                    Contactos
+                  </span>
+                </li>
                 <li className="flex gap-x-2 items-center border-b border-[#7E8085] pb-3">
                   <img src={settings} className="h-4 w-4" />{" "}
                   <span
