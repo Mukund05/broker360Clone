@@ -98,6 +98,24 @@ export const getContacts = async () => {
   }
 }
 
+export const deleteContact = async (id) => {
+  try {
+    const response = await api.delete(`/contacts/${id}`);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+export const updateContact = async (id, data) => {
+  try {
+    const response = await api.put(`/contacts/${id}`, data);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+}
+
 // Function to handle errors
 const handleError = (error) => {
   console.error("API call failed. ", error.response?.data);
@@ -111,4 +129,6 @@ export default {
   resetPassword,
   createContact,
   getContacts,
+  deleteContact,
+  updateContact,
 };

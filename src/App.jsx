@@ -28,6 +28,9 @@ import CancelSubscription from "./components/CancelSubscription";
 import CloneMyproperties from "./components/CloneMyproperties";
 import ResetPassword from "./components/ResetPassword";
 import CreateContact from "./components/Contact";
+import ContactList from "./components/ContactList";
+import UpdateContact from "./components/UpdateContact";
+
 
 function App() {
   return (
@@ -39,7 +42,9 @@ function App() {
           <Route path="/register" Component={Register} />
           <Route path="/forgot-password" Component={ForgotPassword} />
           <Route path="/reset-password" Component={ResetPassword} />
-          <Route path="/contacts" Component={CreateContact} />
+          <Route path="/addContacts" Component={CreateContact} />
+          <Route path="/contactsList" Component={ContactList} />
+          <Route path="/update-contact/:id" Component={UpdateContact} />
           <Route path="/payment-method" Component={Paymentmethod} />
           <Route path="/subscription-plans" Component={Subscription} />
           <Route path="/home" Component={Interface} />

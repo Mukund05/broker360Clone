@@ -222,9 +222,9 @@ const CustomHeader = ({ index }) => {
                   <img src={edit} className="h-4 w-4" />{" "}
                   <span
                     className="font-semibold text-[#6E6E70] cursor-pointer"
-                    onClick={() => navigate("/contacts")}
+                    onClick={() => navigate("/contactsList")}
                   >
-                    Contactos
+                    Lista de contactos
                   </span>
                 </li>
                 <li className="flex gap-x-2 items-center border-b border-[#7E8085] pb-3">
