@@ -10,7 +10,7 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
         Ubicación <img className="px-3 w-12 h-6" src={Roundedq} />
       </span>
 
-      <div className="flex  justify-center gap-2 items-center flex-col sm:flex-row ">
+      {/* <div className="flex  justify-center gap-2 items-center flex-col sm:flex-row ">
         <div className="w-full sm:w-1/3 flex sm:justify-end">
           <span className="text-[#686868] text-sm sm:text-md font-bold"></span>
           <span className="text-red-600"></span>
@@ -19,9 +19,9 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
           <input placeholder="México" className=" overflow-hidden w-full  " />
           <KeyboardArrowDownIcon className="text-[#686868]" />
         </div>
-      </div>
+      </div> */}
 
-      <div className="flex  justify-center gap-2 items-center flex-col sm:flex-row ">
+      {/* <div className="flex  justify-center gap-2 items-center flex-col sm:flex-row ">
         <div className="w-full sm:w-1/3 flex sm:justify-end">
           <span className="text-[#686868] text-sm sm:text-md font-bold"></span>
           <span className="text-red-600"></span>
@@ -30,7 +30,7 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
           <input placeholder="Cancún" className=" overflow-hidden w-full  " />
           <KeyboardArrowDownIcon className="text-[#686868]" />
         </div>
-      </div>
+      </div> */}
       <div className="flex  justify-center gap-2 items-center flex-col sm:flex-row ">
         <div className="w-full sm:w-1/3 flex sm:justify-end">
           <span className="text-[#686868] text-sm sm:text-md font-bold">

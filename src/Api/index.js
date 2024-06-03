@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const BASE_URL = "http://easybroker.devprosolutions.in/api";
+const BASE_URL = "https://360backend.redcrix.com/api";
 
 // Create an Axios instance
 const api = axios.create({
@@ -143,6 +143,15 @@ export const sendProperty = async (data) => {
   }
 }
 
+export const getProperties = async () => {
+  try {
+    const response = await api.get("/properties");
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 // Logout
 export const logout = () => {
   localStorage.removeItem("token");
@@ -165,5 +174,6 @@ export default {
   updateContact,
   getProfile,
   updateProfile,
-  sendProperty
+  sendProperty,
+  getProperties,
 };

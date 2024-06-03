@@ -271,7 +271,7 @@ const EditProfile = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center items-center mx-4 sm:mx-12 ">
+              {/* <div className="flex justify-center items-center mx-4 sm:mx-12 ">
                 <label className="w-28 flex justify-end text-right sm:text-nowrap">
                   Nueva contraseña
                 </label>
@@ -288,7 +288,7 @@ const EditProfile = () => {
                   className="border p-2 rounded-md border-[#8692A6] w-full  ml-2"
                   placeholder="Repite la contraseña"
                 />
-              </div>
+              </div> */}
               <div className="flex justify-center gap-x-8 sm:gap-x-16 items-center">
                 <span className="text-[#35278c] font-bold">Cancelar</span>
                 <button

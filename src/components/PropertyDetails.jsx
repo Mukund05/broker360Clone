@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CustomHeader from "../elements/CustomHeader";
 import Footer from "../elements/Footer";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import earth from "../assets/earth.png";
 import edit from "../assets/edit.png";
 import gallery from "../assets/gallery.png";
@@ -15,12 +15,11 @@ import date from "../assets/date.png";
 import info from "../assets/info.png";
 import CloseIcon from "@mui/icons-material/Close";
 import QueryBuilderIcon from "@mui/icons-material/QueryBuilder";
-
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import Api from "../Api";
+import { CircularProgress } from "@mui/material";
 
 const PropertyDetails = () => {
   const navigate = useNavigate();
@@ -37,6 +36,21 @@ const PropertyDetails = () => {
   const [active, setActive] = useState(0);
   const [grayActive, setGrayActive] = useState(null);
   const [dateModal, setDateModal] = useState(false);
+  const [property, setProperty] = useState(null);
+
+  useEffect(() => {
+    const fetchPropertyData = async () => {
+      try {
+        const response = await Api.getProperties(); // Replace with your API endpoint
+        console.log("Property Data: ", response.message);
+        setProperty(response.message);
+      } catch (error) {
+        console.error("Error fetching property data:", error);
+      }
+    };
+
+    fetchPropertyData();
+  }, []);
 
   const draft = () => {
     setActive(1);
@@ -47,6 +61,7 @@ const PropertyDetails = () => {
     setActive(0);
     setShowModal(false);
   };
+
   const Modal = () => {
     return (
       <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-white bg-opacity-30 z-50">
@@ -83,6 +98,7 @@ const PropertyDetails = () => {
       </div>
     );
   };
+
   const DateModal = () => {
     return (
       <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-white bg-opacity-30 z-50 ">
@@ -130,6 +146,14 @@ const PropertyDetails = () => {
     navigate(-1); // This will take you back to the previous page/component
   };
 
+  if (!property) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <CircularProgress />
+      </div>
+    );
+  }
+
   return (
     <div className="bg-[#EFF6FF]">
       <CustomHeader index={0} />
@@ -143,110 +167,117 @@ const PropertyDetails = () => {
           <KeyboardBackspaceIcon />
           Atrás
         </Link>
-        <div className="w-5/6 p-4 sm:p-8 bg-white m-auto rounded-2xl shadow-2xl flex flex-col md:flex-row  gap-6 ">
-          <div className="flex flex-col gap-6 md:w-3/5">
-            <img src={building} className="" />
-            <div className="flex gap-1 justify-between flex-wrap md:flex-nowrap">
-              <div
-                className={` ${
-                  grayActive === 0 && "bg-[#d4d9e1]"
-                } hover:bg-[#d4d9e1] flex flex-col gap-1 justify-center cursor-pointer  items-center  text-center font-semibold leading-4  p-2 rounded-lg`}
-                onClick={() => {
-                  setShowModal(true), setGrayActive(0);
-                }}
-              >
-                <img src={earth} className="" />
-                <span className="text-[#011B4E] text-xs text-nowrap  ">
-                  Cambiar estatus
-                </span>
-              </div>
-              <div
-                className={`${
-                  grayActive === 1 && "bg-[#d4d9e1]"
-                } hover:bg-[#d4d9e1] flex flex-col gap-1 justify-center cursor-pointer  items-center w-30 text-center font-semibold leading-4 p-2 rounded-lg`}
-                onClick={() => {
-                  setGrayActive(1),
-                    navigate("/my-properties/add-property/property-details");
-                }}
-              >
-                <img src={edit} className="w-4 text-[#011B4E]" />
-                <span className="text-[#011B4E] text-xs  ">
-                  Editar detalles
-                </span>
-              </div>
-              <div
-                className={`${
-                  grayActive === 2 && "bg-[#d4d9e1]"
-                } hover:bg-[#d4d9e1] flex flex-col gap-1 justify-center cursor-pointer  items-center w-24 text-center font-semibold leading-4 p-2 rounded-lg`}
-                onClick={() => {
-                  setGrayActive(2),
-                    navigate("/my-properties/add-property/add-gallery");
-                }}
-              >
-                <img src={gallery} className="w-4" />
-                <span className="text-[#011B4E] text-xs ">Editar galeria</span>
-              </div>
-              <div
-                className={`${
-                  grayActive === 3 && "bg-[#d4d9e1]"
-                } hover:bg-[#d4d9e1] flex flex-col gap-1 justify-center cursor-pointer  items-center w-30  leading-4 w-24 text-center font-semibold p-2 rounded-lg`}
-                onClick={() => {
-                  setDateModal(true), setGrayActive(3);
-                }}
-              >
-                <img src={clock} className="w-4" />
-                <span className="text-[#011B4E] text-xs ">
-                  Programar recordatorio
-                </span>
-              </div>
-              <div
-                className={` ${
-                  grayActive === 4 && "bg-[#d4d9e1]"
-                } hover:bg-[#d4d9e1] flex flex-col gap-1 justify-center cursor-pointer  items-center w-24 text-center font-semibold leading-4 p-2 rounded-lg`}
-                onClick={() => setGrayActive(4)}
-              >
-                <img src={share} className="w-4" />
-                <span
-                  className="text-[#011B4E] text-xs "
-                  onClick={() => notify()}
+        {property.map((propertyData, index) => (
+          <div className="w-5/6 p-4 sm:p-8 bg-white m-auto rounded-2xl shadow-2xl flex flex-col md:flex-row  gap-6 ">
+            <div className="flex flex-col gap-6 md:w-3/5">
+              <img src={building} className="" />
+              <div className="flex gap-1 justify-between flex-wrap md:flex-nowrap">
+                <div
+                  className={` ${
+                    grayActive === 0 && "bg-[#d4d9e1]"
+                  } hover:bg-[#d4d9e1] flex flex-col gap-1 justify-center cursor-pointer  items-center  text-center font-semibold leading-4  p-2 rounded-lg`}
+                  onClick={() => {
+                    setShowModal(true), setGrayActive(0);
+                  }}
                 >
-                  Compartirs
+                  <img src={earth} className="" />
+                  <span className="text-[#011B4E] text-xs text-nowrap  ">
+                    Cambiar estatus
+                  </span>
+                </div>
+                <div
+                  className={`${
+                    grayActive === 1 && "bg-[#d4d9e1]"
+                  } hover:bg-[#d4d9e1] flex flex-col gap-1 justify-center cursor-pointer  items-center w-30 text-center font-semibold leading-4 p-2 rounded-lg`}
+                  onClick={() => {
+                    setGrayActive(1),
+                      navigate("/my-properties/add-property/property-details");
+                  }}
+                >
+                  <img src={edit} className="w-4 text-[#011B4E]" />
+                  <span className="text-[#011B4E] text-xs  ">
+                    Editar detalles
+                  </span>
+                </div>
+                <div
+                  className={`${
+                    grayActive === 2 && "bg-[#d4d9e1]"
+                  } hover:bg-[#d4d9e1] flex flex-col gap-1 justify-center cursor-pointer  items-center w-24 text-center font-semibold leading-4 p-2 rounded-lg`}
+                  onClick={() => {
+                    setGrayActive(2),
+                      navigate("/my-properties/add-property/add-gallery");
+                  }}
+                >
+                  <img src={gallery} className="w-4" />
+                  <span className="text-[#011B4E] text-xs ">
+                    Editar galeria
+                  </span>
+                </div>
+                <div
+                  className={`${
+                    grayActive === 3 && "bg-[#d4d9e1]"
+                  } hover:bg-[#d4d9e1] flex flex-col gap-1 justify-center cursor-pointer  items-center w-30  leading-4 w-24 text-center font-semibold p-2 rounded-lg`}
+                  onClick={() => {
+                    setDateModal(true), setGrayActive(3);
+                  }}
+                >
+                  <img src={clock} className="w-4" />
+                  <span className="text-[#011B4E] text-xs ">
+                    Programar recordatorio
+                  </span>
+                </div>
+                <div
+                  className={` ${
+                    grayActive === 4 && "bg-[#d4d9e1]"
+                  } hover:bg-[#d4d9e1] flex flex-col gap-1 justify-center cursor-pointer  items-center w-24 text-center font-semibold leading-4 p-2 rounded-lg`}
+                  onClick={() => setGrayActive(4)}
+                >
+                  <img src={share} className="w-4" />
+                  <span
+                    className="text-[#011B4E] text-xs "
+                    onClick={() => notify()}
+                  >
+                    Compartirs
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-1 mx-auto sm:mx-0">
+              <span className="text-[#6E6E70] text-md md:text-lg font-semibold">
+                {propertyData.internal_key}
+              </span>
+              <span className="text-[#052682] text-lg md:text-xl font-bold">
+                {propertyData.ad_desc}
+              </span>
+              <span className="text-[#ff9203] text-md md:text-lg font-semibold">
+                {propertyData.show_price_ad ? `${propertyData.price} MXN` : ""}
+              </span>
+              <span className="text-[#6e6e70] text-md md:text-lg ">
+                {propertyData.street}
+              </span>
+              <div className="flex gap-2 items-center">
+                <img src={m} className="" />
+                <span className="text-md sm:text-lg text-[#454545]">
+                  {propertyData.construction} m2
+                </span>
+              </div>
+              <div className="flex gap-2 items-center">
+                <img src={vector} className="w-4 h-4 " />
+                <span className="text-md sm:text-lg text-[#E5B219] font-semibold">
+                  Inmobiliaria {propertyData.user_id}{" "}
+                  {/* Replace with actual user data */}
+                </span>
+              </div>
+              <div className="flex gap-2 items-center">
+                <img src={date} className="w-4 h-4 " />
+                <span className="text-md sm:text-lg text-[#6e6e70] font-semibold">
+                  Creada {propertyData.creation_date}{" "}
+                  {/* Replace with actual creation date */}
                 </span>
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-1 mx-auto sm:mx-0">
-            <span className="text-[#6E6E70] text-md md:text-lg font-semibold">
-              RB-89657
-            </span>
-            <span className="text-[#052682] text-lg md:text-xl font-bold">
-              Apartamento con 4 dormitorios en venta en Torres, en el barrio
-              Playa Grande
-            </span>
-            <span className="text-[#ff9203] text-md md:text-lg font-semibold">
-              $258,369 MXN
-            </span>
-            <span className="text-[#6e6e70] text-md md:text-lg ">
-              Casa ubicada en el centro
-            </span>
-            <div className="flex gap-2 items-center">
-              <img src={m} className="" />
-              <span className="text-md sm:text-lg text-[#454545]">200 m2</span>
-            </div>
-            <div className="flex gap-2 items-center">
-              <img src={vector} className="w-4 h-4 " />
-              <span className="text-md sm:text-lg text-[#E5B219] font-semibold">
-                Inmobiliaria Egypt-House
-              </span>
-            </div>
-            <div className="flex gap-2 items-center">
-              <img src={date} className="w-4 h-4 " />
-              <span className="text-md sm:text-lg text-[#6e6e70] font-semibold">
-                Creada 20/12/2023
-              </span>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
       <Footer />
       {showModal && <Modal />}
