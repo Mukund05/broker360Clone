@@ -20,6 +20,10 @@ const ForgotPassword = () => {
   };
 
   const handleForgotPassword = async () => {
+    if(!email) {
+      setError("Email is required");
+      return;
+    }
     setLoading(true); 
     setError("");
     try {

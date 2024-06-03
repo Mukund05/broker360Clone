@@ -164,5 +164,6 @@ export default {
   deleteContact,
   updateContact,
   getProfile,
-  updateProfile
+  updateProfile,
+  sendProperty
 };

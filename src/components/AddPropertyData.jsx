@@ -53,7 +53,7 @@ const AddPropertyData = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await Api.createProperty(propertyData);
+      const response = await Api.sendProperty(propertyData);
       console.log("Property Created: ", response);
       navigate("/my-property/property-details");
     } catch (error) {
