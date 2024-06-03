@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Roundedq from "../assets/Roundedq.png";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-const Form2 = () => {
+const Form2 = ({ propertyData, onFormDataChange }) => {
   const [active, setActive] = useState(0);
   return (
     <div className="w-full flex flex-col gap-5 shadow-2xl p-5 xs:p-8 sm:p-12 rounded-2xl">
@@ -39,7 +39,15 @@ const Form2 = () => {
         </div>
         <div className="w-full sm:w-2/3 flex gap-3 ">
           <div className="p-2 px-4 flex justify-between w-2/3 border border-[#8692A6] rounded-md">
-            <input placeholder="Calle" className=" overflow-hidden w-full  " />
+            <input
+              placeholder="Calle"
+              className=" overflow-hidden w-full  "
+              name="typstreete"
+              value={propertyData.street}
+              onChange={(e) =>
+                onFormDataChange({ ...propertyData, street: e.target.value })
+              }
+            />
           </div>
           <div className="p-2 px-4 flex justify-between w-2/3 border border-[#8692A6] rounded-md">
             <input placeholder="Número" className=" overflow-hidden w-full  " />
@@ -48,6 +56,14 @@ const Form2 = () => {
             <input
               placeholder="Interior"
               className=" overflow-hidden w-full  "
+              name="corner_with"
+              value={propertyData.corner_with}
+              onChange={(e) =>
+                onFormDataChange({
+                  ...propertyData,
+                  corner_with: e.target.value,
+                })
+              }
             />
           </div>
         </div>
@@ -60,7 +76,15 @@ const Form2 = () => {
           <span className="text-red-600"></span>
         </div>
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
-          <input placeholder="Ninguno" className=" overflow-hidden w-full  " />
+          <input
+            placeholder="Ninguno"
+            className=" overflow-hidden w-full  "
+            name="postal_code"
+            value={propertyData.postal_code}
+            onChange={(e) =>
+              onFormDataChange({ ...propertyData, postal_code: e.target.value })
+            }
+          />
         </div>
       </div>
       <div className="flex  justify-start gap-2 items-center flex-col sm:flex-row ">

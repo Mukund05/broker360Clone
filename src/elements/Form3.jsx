@@ -1,7 +1,7 @@
 import React from "react";
 import Roundedq from "../assets/Roundedq.png";
 
-const Form3 = () => {
+const Form3 = ({ propertyData, onFormDataChange }) => {
   return (
     <div className="w-full flex flex-col gap-8 shadow-2xl p-5 xs:p-8 sm:p-12 rounded-2xl ">
       <span className=" gap-4 text-[#686868] font-bold text-start flex text-2xl sm:text-3xl items-center md:px-14">

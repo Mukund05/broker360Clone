@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import line from "../assets/line.png";
 
-const Form1 = () => {
+const Form1 = ({ propertyData, onFormDataChange }) => {
   const [active, setActive] = useState(0);
   const [activeElem, setActiveElem] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
@@ -16,6 +16,15 @@ const Form1 = () => {
 
   const handleCurrencyChange = (val) => {
     setSelectedCurrency(val);
+  };
+
+  const handleValue = (val) => () => {
+    setActive(val);
+    if (val === 0) {
+      onFormDataChange({ ...propertyData, show_price_ad: true });
+    } else {
+      onFormDataChange({ ...propertyData, show_price_ad: false });
+    }
   };
 
   return (
@@ -40,7 +49,15 @@ const Form1 = () => {
           <span className="text-red-600">*</span>
         </div>
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
-          <input placeholder="Casa" className=" overflow-hidden w-full  " />
+          <input
+            placeholder="Casa"
+            className="overflow-hidden w-full"
+            name="type"
+            value={propertyData.type}
+            onChange={(e) =>
+              onFormDataChange({ ...propertyData, type: e.target.value })
+            }
+          />
           <KeyboardArrowDownIcon className="text-[#686868]" />
         </div>
       </div>
@@ -52,7 +69,15 @@ const Form1 = () => {
           <span className="text-red-600">*</span>
         </div>
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
-          <input placeholder="Anuncio" className=" overflow-hidden w-full" />
+          <input
+            placeholder="Anuncio"
+            className=" overflow-hidden w-full"
+            name="ad_type"
+            value={propertyData.ad_type}
+            onChange={(e) =>
+              onFormDataChange({ ...propertyData, ad_type: e.target.value })
+            }
+          />
         </div>
       </div>
       <div className="flex justify-center gap-4 items-start flex-col sm:flex-row">
@@ -68,6 +93,11 @@ const Form1 = () => {
             className=" overflow-hidden w-full"
             rows={6}
             col={20}
+            name="ad_desc"
+            value={propertyData.ad_desc}
+            onChange={(e) =>
+              onFormDataChange({ ...propertyData, ad_desc: e.target.value })
+            }
           />
         </div>
       </div>
@@ -299,7 +329,7 @@ const Form1 = () => {
             className={`font-bold ${
               active === 0 && "text-white bg-[#011B4E]"
             }  rounded-md w-1/2  p-2 text-[#011B4E] cursor-pointer`}
-            onClick={() => setActive(0)}
+            onClick={handleValue(0)}
           >
             Si
           </div>
@@ -307,7 +337,7 @@ const Form1 = () => {
             className={`font-bold ${
               active === 1 && "text-white bg-[#011B4E]"
             }  rounded-md w-1/2  p-2 text-[#011B4E] cursor-pointer`}
-            onClick={() => setActive(1)}
+            onClick={handleValue(1)}
           >
             No
           </div>
@@ -321,7 +351,15 @@ const Form1 = () => {
           <span className="text-red-600"></span>
         </div>
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
-          <input placeholder="Ninguno" className=" overflow-hidden w-full" />
+          <input
+            placeholder="Ninguno"
+            className=" overflow-hidden w-full"
+            name="bedroom"
+            value={propertyData.bedroom}
+            onChange={(e) =>
+              onFormDataChange({ ...propertyData, bedroom: e.target.value })
+            }
+          />
           <KeyboardArrowDownIcon className="text-[#686868]" />
         </div>
       </div>
@@ -333,7 +371,15 @@ const Form1 = () => {
           <span className="text-red-600"></span>
         </div>
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
-          <input placeholder="Ninguno" className=" overflow-hidden w-full" />
+          <input
+            placeholder="Ninguno"
+            className=" overflow-hidden w-full"
+            name="bathrooms"
+            value={propertyData.bathrooms}
+            onChange={(e) =>
+              onFormDataChange({ ...propertyData, bathrooms: e.target.value })
+            }
+          />
           <KeyboardArrowDownIcon className="text-[#686868]" />
         </div>
       </div>
@@ -345,7 +391,15 @@ const Form1 = () => {
           <span className="text-red-600"></span>
         </div>
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
-          <input placeholder="Ninguno" className=" overflow-hidden w-full" />
+          <input
+            placeholder="Ninguno"
+            className=" overflow-hidden w-full"
+            name="half_bath"
+            value={propertyData.half_bath}
+            onChange={(e) =>
+              onFormDataChange({ ...propertyData, half_bath: e.target.value })
+            }
+          />
           <KeyboardArrowDownIcon className="text-[#686868]" />
         </div>
       </div>
@@ -368,6 +422,14 @@ const Form1 = () => {
               <input
                 placeholder="Ninguno"
                 className=" overflow-hidden text-xs w-full"
+                name="parking_lots"
+                value={propertyData.parking_lots}
+                onChange={(e) =>
+                  onFormDataChange({
+                    ...propertyData,
+                    parking_lots: e.target.value,
+                  })
+                }
               />
               <KeyboardArrowDownIcon className="text-[#686868]" />
             </div>
@@ -393,7 +455,18 @@ const Form1 = () => {
           <span className="text-red-600"></span>
         </div>
         <div className="p-2 px-4 flex justify-between w-3/4 sm:w-2/5 border border-[#8692A6] rounded-md">
-          <input placeholder="" className=" overflow-hidden w-full" />
+          <input
+            placeholder=""
+            className=" overflow-hidden w-full"
+            name="construction"
+            value={propertyData.construction}
+            onChange={(e) =>
+              onFormDataChange({
+                ...propertyData,
+                construction: e.target.value,
+              })
+            }
+          />
           <span className="bg-[#E0E0E0] rounded-md p-2 px-6 font-semibold text-sm sm:text-md">
             m2
           </span>
@@ -421,7 +494,18 @@ const Form1 = () => {
           <span className="text-red-600"></span>
         </div>
         <div className="p-2 px-4 flex justify-between w-full  sm:w-2/3 border border-[#8692A6] rounded-md">
-          <input placeholder="Ninguno" className=" overflow-hidden w-full" />
+          <input
+            placeholder="Ninguno"
+            className=" overflow-hidden w-full"
+            name="year_construction"
+            value={propertyData.year_construction}
+            onChange={(e) =>
+              onFormDataChange({
+                ...propertyData,
+                year_construction: e.target.value,
+              })
+            }
+          />
           <KeyboardArrowDownIcon className="text-[#686868]" />
         </div>
       </div>{" "}
@@ -433,7 +517,18 @@ const Form1 = () => {
           <span className="text-red-600"></span>
         </div>
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
-          <input placeholder="Ninguno" className=" overflow-hidden w-full" />
+          <input
+            placeholder="Ninguno"
+            className=" overflow-hidden w-full"
+            name="number_plants"
+            value={propertyData.number_plants}
+            onChange={(e) =>
+              onFormDataChange({
+                ...propertyData,
+                number_plants: e.target.value,
+              })
+            }
+          />
           <KeyboardArrowDownIcon className="text-[#686868]" />
         </div>
       </div>{" "}
@@ -445,7 +540,18 @@ const Form1 = () => {
           <span className="text-red-600"></span>
         </div>
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
-          <input placeholder="Ninguno" className=" overflow-hidden w-full" />
+          <input
+            placeholder="Ninguno"
+            className=" overflow-hidden w-full"
+            name="number_floors"
+            value={propertyData.number_floors}
+            onChange={(e) =>
+              onFormDataChange({
+                ...propertyData,
+                number_floors: e.target.value,
+              })
+            }
+          />
           <KeyboardArrowDownIcon className="text-[#686868]" />
         </div>
       </div>{" "}
@@ -457,7 +563,18 @@ const Form1 = () => {
           <span className="text-red-600"></span>
         </div>
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
-          <input placeholder="Ninguno" className=" overflow-hidden w-full" />
+          <input
+            placeholder="Ninguno"
+            className=" overflow-hidden w-full"
+            name="monthly_maintence"
+            value={propertyData.monthly_maintence}
+            onChange={(e) =>
+              onFormDataChange({
+                ...propertyData,
+                monthly_maintence: e.target.value,
+              })
+            }
+          />
           <KeyboardArrowDownIcon className="text-[#686868]" />
         </div>
       </div>{" "}
@@ -469,7 +586,18 @@ const Form1 = () => {
           <span className="text-red-600"></span>
         </div>
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
-          <input placeholder="Ninguno" className=" overflow-hidden w-full" />
+          <input
+            placeholder="Ninguno"
+            className=" overflow-hidden w-full"
+            name="internal_key"
+            value={propertyData.internal_key}
+            onChange={(e) =>
+              onFormDataChange({
+                ...propertyData,
+                internal_key: e.target.value,
+              })
+            }
+          />
           <KeyboardArrowDownIcon className="text-[#686868]" />
         </div>
       </div>{" "}
@@ -480,7 +608,18 @@ const Form1 = () => {
           </span>
         </div>
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
-          <input placeholder="Ninguno" className=" overflow-hidden w-full" />
+          <input
+            placeholder="Ninguno"
+            className=" overflow-hidden w-full"
+            name="key_code"
+            value={propertyData.key_code}
+            onChange={(e) =>
+              onFormDataChange({
+                ...propertyData,
+                key_code: e.target.value,
+              })
+            }
+          />
           <KeyboardArrowDownIcon className="text-[#686868]" />
         </div>
       </div>

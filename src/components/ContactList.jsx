@@ -13,15 +13,7 @@ const ContactList = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-
-  //on browser back button click navigate to properties page
-
-  const handleBackButton = () => {
-    navigate("/properties");
-    };
-
     
-
   useEffect(() => {
     const fetchContacts = async () => {
       try {

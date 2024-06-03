@@ -69,7 +69,7 @@ export const forgotPassword = async (data) => {
   } catch (error) {
     handleError(error);
   }
-}
+};
 
 export const resetPassword = async (data) => {
   try {
@@ -78,7 +78,7 @@ export const resetPassword = async (data) => {
   } catch (error) {
     handleError(error);
   }
-}
+};
 
 export const createContact = async (data) => {
   try {
@@ -87,7 +87,7 @@ export const createContact = async (data) => {
   } catch (error) {
     handleError(error);
   }
-}
+};
 
 export const getContacts = async () => {
   try {
@@ -96,7 +96,7 @@ export const getContacts = async () => {
   } catch (error) {
     handleError(error);
   }
-}
+};
 
 export const deleteContact = async (id) => {
   try {
@@ -105,7 +105,7 @@ export const deleteContact = async (id) => {
   } catch (error) {
     handleError(error);
   }
-}
+};
 
 export const updateContact = async (id, data) => {
   try {
@@ -114,7 +114,39 @@ export const updateContact = async (id, data) => {
   } catch (error) {
     handleError(error);
   }
+};
+
+export const getProfile = async () => {
+  try {
+    const response = await api.get("/current/user");
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const updateProfile = async (data, id) => {
+  try {
+    const response = await api.put(`/users/${id}`, data);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const sendProperty = async (data) => {
+  try {
+    const response = await api.post("/properties", data);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
 }
+
+// Logout
+export const logout = () => {
+  localStorage.removeItem("token");
+};
 
 // Function to handle errors
 const handleError = (error) => {
@@ -131,4 +163,6 @@ export default {
   getContacts,
   deleteContact,
   updateContact,
+  getProfile,
+  updateProfile
 };
