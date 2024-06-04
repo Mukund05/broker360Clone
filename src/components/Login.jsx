@@ -9,10 +9,11 @@ import { Link, useNavigate } from "react-router-dom";
 import Header from "../elements/Header";
 import CustomHeader from "../elements/CustomHeader"; // Import CustomHeader for logged-in users
 import Footer from "../elements/Footer";
-import api from "../Api";
+import { useAuth } from "../Auth/AuthProvider";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { loginAction } = useAuth(); // Access loginAction from AuthContext
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,19 +30,12 @@ const Login = () => {
 
   // Handle login
   const handleLogin = async () => {
-    try {
-      const response = await api.login({ email, password });
-      console.log("Response:", response);
-
-      if (response.success) {
-        localStorage.setItem("token", response?.data?.token);
-        localStorage.setItem("userId", response?.data?.user?.id);
-        navigate("/my-properties");
-      } else {
-        setError(response.message);
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || "Login failed. Please try again.");
+    setError(""); // Clear previous errors
+    const response = await loginAction({ email, password });
+    if (response.success) {
+      navigate("/my-properties");
+    } else {
+      setError(response.message);
     }
   };
 

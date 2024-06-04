@@ -30,59 +30,74 @@ import ResetPassword from "./components/ResetPassword";
 import CreateContact from "./components/Contact";
 import ContactList from "./components/ContactList";
 import UpdateContact from "./components/UpdateContact";
-
+import AuthProvider from "./Auth/AuthProvider";
+import ProtectedRoute from "./ProtectedRoutes";
 
 function App() {
+  console.log("App rendered");
   return (
     <div className="app">
       <Router>
-        <Routes>
-          <Route path="/" Component={LandingPage} />
-          <Route path="/login" exact Component={Login} />
-          <Route path="/register" Component={Register} />
-          <Route path="/forgot-password" Component={ForgotPassword} />
-          <Route path="/reset-password" Component={ResetPassword} />
-          <Route path="/addContacts" Component={CreateContact} />
-          <Route path="/contactsList" Component={ContactList} />
-          <Route path="/update-contact/:id" Component={UpdateContact} />
-          <Route path="/payment-method" Component={Paymentmethod} />
-          <Route path="/subscription-plans" Component={Subscription} />
-          <Route path="/home" Component={Interface} />
-          <Route path="/view-properties" Component={Properties} />
-          <Route path="/mywebsites/use-template" Component={Mywebsites} />
-          <Route path="/mywebsites/editwebsite" Component={EditWebsite} />
-          <Route path="/collaborations" Component={Collaborations} />
-          <Route path="/view-properties/details" Component={ViewProperties} />
-          <Route path="/my-properties" Component={MyProperties} />
-          <Route path="/my-properties2" Component={CloneMyproperties} />
-          <Route
-            path="/project-creation/template"
-            Component={ProjectCreation}
-          />
-          <Route path="/Edit-profile" Component={EditProfile} />
-          <Route path="/help" Component={DropdownHelp} />
-          <Route path="/payment-method-and-frequency" Component={PaymentFreq} />
-          <Route
-            path="/my-property/property-details"
-            Component={PropertyDetails}
-          />
-          <Route path="/configurations" Component={DropdownSettings} />
-          <Route
-            path="/my-properties/add-property/property-details"
-            Component={AddPropertyData}
-          />
-          <Route
-            path="/my-properties/add-property/add-gallery"
-            Component={ShareGallery}
-          />
-          <Route path="/properties/property-details" Component={PropertyInfo} />
-          <Route path="/agencies" Component={Agencies} />
-          <Route path="/message-gateway" Component={MessageGateway} />
-          <Route
-            path="/change-plan/cancel-subscription"
-            Component={CancelSubscription}
-          />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" Component={LandingPage} />
+            <Route path="/login" Component={Login} />
+            <Route path="/register" Component={Register} />
+            <Route path="/forgot-password" Component={ForgotPassword} />
+            <Route path="/reset-password" Component={ResetPassword} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/home" Component={Interface} />
+              <Route path="/addContacts" Component={CreateContact} />
+              <Route path="/contactsList" Component={ContactList} />
+              <Route path="/update-contact/:id" Component={UpdateContact} />
+              <Route path="/payment-method" Component={Paymentmethod} />
+              <Route path="/subscription-plans" Component={Subscription} />
+              <Route path="/view-properties" Component={Properties} />
+              <Route path="/mywebsites/use-template" Component={Mywebsites} />
+              <Route path="/mywebsites/editwebsite" Component={EditWebsite} />
+              <Route path="/collaborations" Component={Collaborations} />
+              <Route
+                path="/view-properties/details"
+                Component={ViewProperties}
+              />
+              <Route path="/my-properties" Component={MyProperties} />
+              <Route path="/my-properties2" Component={CloneMyproperties} />
+              <Route
+                path="/project-creation/template"
+                Component={ProjectCreation}
+              />
+              <Route path="/Edit-profile" Component={EditProfile} />
+              <Route path="/help" Component={DropdownHelp} />
+              <Route
+                path="/payment-method-and-frequency"
+                Component={PaymentFreq}
+              />
+              <Route
+                path="/my-property/property-details"
+                Component={PropertyDetails}
+              />
+              <Route path="/configurations" Component={DropdownSettings} />
+              <Route
+                path="/my-properties/add-property/property-details"
+                Component={AddPropertyData}
+              />
+              <Route
+                path="/my-properties/add-property/add-gallery"
+                Component={ShareGallery}
+              />
+              <Route
+                path="/properties/property-details"
+                Component={PropertyInfo}
+              />
+              <Route path="/agencies" Component={Agencies} />
+              <Route path="/message-gateway" Component={MessageGateway} />
+              <Route
+                path="/change-plan/cancel-subscription"
+                Component={CancelSubscription}
+              />
+            </Route>
+          </Routes>
+        </AuthProvider>
       </Router>
     </div>
   );

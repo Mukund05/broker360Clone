@@ -9,6 +9,7 @@ import edit from "../assets/edit.png";
 import play from "../assets/play.png";
 import question from "../assets/question.png";
 import info from "../assets/info.png";
+import { useAuth } from "../Auth/AuthProvider"; 
 
 const CustomHeader = ({ index }) => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const CustomHeader = ({ index }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [arrowUp, setArrowUp] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const { logout } = useAuth();
 
   const setIndex = (index) => {
     if (index == 0) navigate("/view-properties");
@@ -51,13 +53,6 @@ const CustomHeader = ({ index }) => {
     }
   };
 
-  // Function to handle logout and open modal
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    navigate("/");
-  };
-
   const Modal = () => {
     return (
       <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-white bg-opacity-30 z-50">
@@ -75,7 +70,7 @@ const CustomHeader = ({ index }) => {
             </button>
             <button
               className="bg-[#011B4E]  text-white font-semibold py-2 px-6 sm:px-12 rounded-3xl text-xs sm:text-md"
-              onClick={handleLogout}
+              onClick={logout}
             >
               Si, quiero
             </button>
