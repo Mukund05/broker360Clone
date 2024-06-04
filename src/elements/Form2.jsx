@@ -115,7 +115,7 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
           ></iframe>
         </div>
       </div>
-      <div className="flex  justify-center gap-2 items-center flex-col sm:flex-row ">
+      {/* <div className="flex  justify-center gap-2 items-center flex-col sm:flex-row ">
         <div className="w-full sm:w-1/3 flex sm:justify-end">
           <span className="text-[#686868] text-sm sm:text-md font-bold">
             Mostrar precios en el anuncio
@@ -139,7 +139,7 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
             No
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

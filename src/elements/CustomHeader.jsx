@@ -53,6 +53,8 @@ const CustomHeader = ({ index }) => {
 
   // Function to handle logout and open modal
   const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     navigate("/");
   };
 

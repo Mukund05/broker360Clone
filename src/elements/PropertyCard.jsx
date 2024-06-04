@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
-import propertyImg from "../assets/propertyimg.png";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BathtubIcon from "@mui/icons-material/Bathtub";
 import BedroomParentIcon from "@mui/icons-material/BedroomParent";
@@ -7,21 +6,12 @@ import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import propertyImg from "../assets/propertyimg.png"; // Placeholder image
 
-const data = [
-  propertyImg,
-  propertyImg,
-  propertyImg,
-  propertyImg,
-  propertyImg,
-  propertyImg,
-  propertyImg,
-  propertyImg,
-];
-
-const PropertyCard = ({ heading, content, route }) => {
+const PropertyCard = ({ property }) => {
   const [slide, setSlide] = useState(0);
   const navigate = useNavigate();
+  const [imageError, setImageError] = useState({});
 
   const handlePrev = () => {
     if (slide > 0) setSlide(slide - 1);
@@ -33,88 +23,107 @@ const PropertyCard = ({ heading, content, route }) => {
     else setSlide(0);
   };
 
+  const handleImageError = (index) => {
+    setImageError((prev) => ({ ...prev, [index]: true }));
+  };
+
+  const data = [
+    propertyImg,
+    propertyImg,
+    propertyImg,
+    propertyImg,
+    propertyImg,
+    propertyImg,
+    propertyImg,
+    propertyImg,
+  ];
+
   return (
-    <div className="min-w-80 sm:min-w-80 md:w-80 bg-white border border-gray-200 rounded-md shadow">
+    <div className="min-w-80 sm:min-w-80 md:w-80 bg-white border border-gray-200 rounded-lg shadow-lg transition-transform transform hover:scale-105">
       <div className="relative">
         <div
-          className="absolute shadow-2xl rounded-full p-1 left-1 text-yellow-500 cursor-pointer z-10 top-1/2"
+          className="absolute shadow-2xl rounded-full p-1 left-1 text-yellow-500 cursor-pointer z-10 top-1/2 transform -translate-y-1/2"
           onClick={handlePrev}
         >
-          <KeyboardArrowLeftIcon className="" />
+          <KeyboardArrowLeftIcon className="text-2xl" />
         </div>
         <div
-          className="absolute shadow-2xl rounded-full p-1 right-1 text-yellow-500 cursor-pointer z-10 top-1/2"
+          className="absolute shadow-2xl rounded-full p-1 right-1 text-yellow-500 cursor-pointer z-10 top-1/2 transform -translate-y-1/2"
           onClick={handleNext}
         >
-          <ChevronRightIcon className="" />
+          <ChevronRightIcon className="text-2xl" />
         </div>
-        <div className="absolute bottom-2 left-1/3 flex gap-1 z-10">
-          {data.map((data, index) => (
+        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1 z-10">
+          {data.map((_, index) => (
             <div
               className={`p-1 ${
                 index === slide ? "bg-white" : "bg-[#D9D9D9] opacity-40"
-              }  cursor-pointer rounded-full`}
+              } cursor-pointer rounded-full`}
               key={index}
               onClick={() => setSlide(index)}
             ></div>
           ))}
         </div>
-        <div className="custom-container scroll-smooth flex  relative">
+        <div className="custom-container scroll-smooth flex relative">
           {data.map((img, index) => (
             <img
-              className={`rounded-t-md overflow-x-hidden min-w-80 ${
-                slide === index ? "inline" : "hidden"
+              className={`rounded-t-lg overflow-x-hidden min-w-80 ${
+                slide === index ? "block" : "hidden"
               }`}
-              src={propertyImg}
+              src={imageError[index] ? propertyImg : img}
               alt=""
               key={index}
+              onError={() => handleImageError(index)}
             />
           ))}
         </div>
-
-        <div className="bg-[#bdc2c6] p-[1px] absolute bottom-3 right-3 rounded-sm">
+        <div className="bg-[#bdc2c6] p-1 absolute bottom-3 right-3 rounded-full">
           <FavoriteBorderIcon className="text-[#011B4E]" />
         </div>
-        <button className="text-white bg-[#6E6E70] text-sm rounded-md absolute top-3 left-3 cursor-pointer font-semibold p-2">
-          Activa
+        <button className="text-white bg-[#6E6E70] text-xs md:text-sm rounded-md absolute top-3 left-3 cursor-pointer font-semibold p-1 md:p-2">
+          {property?.ad_type || "Tipo de anuncio"}
         </button>
-        <button className="text-white bg-[#011B4E] text-sm rounded-md absolute top-3 right-3 cursor-pointer font-semibold p-2">
-          Renta temporal
+        <button className="text-white bg-[#011B4E] text-xs md:text-sm rounded-md absolute top-3 right-3 cursor-pointer font-semibold p-1 md:p-2">
+          {property?.operation_type || "Tipo de operación"}
         </button>
       </div>
       <div
-        className="p-3 flex flex-col gap-y-1 "
-        onClick={() => navigate(route)}
+        className="p-4 flex flex-col gap-y-2 cursor-pointer"
+        onClick={() => navigate(`/my-property/property-details/${property?.id || ""}`)}
       >
-        <div className="flex justify-between w-full items-center">
-          <span className="text-[#FF9203] font-bold text-xl">258,36 MXN</span>
-          <span className="text-xs text-end font-semibold text-[#6E6E70]">
-            Inmobiliaria Egypt-House
+        <div className="flex justify-between items-center">
+          <span className="text-[#FF9203] font-bold text-lg md:text-xl">
+            {property?.show_price_ad
+              ? `${property?.show_price_ad
+                || "N/A"} MXN`
+              : "Precio no disponible"}
+          </span>
+          <span className="text-xs md:text-sm text-end font-semibold text-[#6E6E70]">
+            {property?.type || "Descripción del anuncio"}
           </span>
         </div>
-
-        <span className="text-[#052682] text-md sm:text-lg font-bold">
-          Casa bonita
+        <span className="text-[#052682] text-md md:text-lg font-bold">
+          {property?.ad_type || "Encabezado"}
         </span>
-        <span className="text-[#6E6E70] text-sm sm:text-md">
-          Casa ubicada en el centro
+        <span className="text-[#6E6E70] text-sm md:text-md">
+          {property?.ad_desc || "Descripción de la propiedad"}
         </span>
-        <div className="flex gap-3 items-center justify-start text-[#6D737A]">
-          <div className="flex gap-2">
-            <span className="font-bold text-lg">2</span>
-            <BathtubIcon className="" />
+        <div className="flex gap-4 items-center text-[#6D737A]">
+          <div className="flex gap-1 items-center">
+            <BathtubIcon className="text-lg" />
+            <span className="font-bold text-md md:text-lg">{property?.bathrooms || 0}</span>
           </div>
-          <div className="flex gap-2">
-            <span className="font-bold text-lg">3</span>
-            <BedroomParentIcon className="" />
+          <div className="flex gap-1 items-center">
+            <BedroomParentIcon className="text-lg" />
+            <span className="font-bold text-md md:text-lg">{property?.bedrooms || 0}</span>
           </div>
-          <div className="flex gap-2">
-            <span className="font-bold text-lg">1</span>
-            <DirectionsCarIcon className="" />
+          <div className="flex gap-1 items-center">
+            <DirectionsCarIcon className="text-lg" />
+            <span className="font-bold text-md md:text-lg">{property?.parking_lots || 0}</span>
           </div>
         </div>
-        <span className="text-[#6E6E70] text-sm sm:text-md font-semibold">
-          Construcción 95.36 m²
+        <span className="text-[#6E6E70] text-sm md:text-md font-semibold">
+          Construcción {property?.construction || 0} m²
         </span>
       </div>
     </div>

@@ -12,30 +12,30 @@ import Api from "../Api"; // Import the API functions
 const AddPropertyData = () => {
   const [formNumber, setFormNumber] = useState(0);
   const [propertyData, setPropertyData] = useState({
-    type: "residential",
-    ad_type: "sale",
-    ad_desc: "Beautiful house with garden",
+    type: "",
+    ad_type: "",
+    ad_desc: "",
     operation_type: "rent",
     show_price_ad: true,
-    bedroom: 3,
-    bathrooms: 2,
-    half_bath: 1,
-    parking_lots: 2,
-    construction: 120.5,
-    year_construction: 2015,
-    number_plants: 1,
-    number_floors: 2,
-    monthly_maintence: 150.75,
-    internal_key: "INT123",
-    key_code: "KEY456",
-    user_id: 1,
+    bedroom: 0,
+    bathrooms: 0,
+    half_bath: 0,
+    parking_lots: 0,
+    construction: 0,
+    year_construction: 0,
+    number_plants: 0,
+    number_floors: 20,
+    monthly_maintence: 0,
+    internal_key: "",
+    key_code: "",
+    user_id: undefined,
     street: "",
     corner_with: "",
     postal_code: "",
-    property_features: "Features",
-    share_commission: 1,
-    commission_percent: 1,
-    condition_sharing: "Sharing",
+    property_features: "",
+    share_commission: 0,
+    commission_percent: 0,
+    condition_sharing: "",
   });
 
   const navigate = useNavigate();
@@ -53,6 +53,12 @@ const AddPropertyData = () => {
 
   const handleSubmit = async () => {
     try {
+      //before sending the data, we need to add the user_id to the propertyData
+      const user = await Api.getProfile();
+      setPropertyData((prevData) => ({
+        ...prevData,
+        user_id: user.id,
+      }));
       const response = await Api.sendProperty(propertyData);
       console.log("Property Created: ", response);
       navigate("/my-property/property-details");

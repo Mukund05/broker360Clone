@@ -154,6 +154,11 @@ const PropertyDetails = () => {
     );
   }
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
     <div className="bg-[#EFF6FF]">
       <CustomHeader index={0} />
@@ -168,7 +173,7 @@ const PropertyDetails = () => {
           Atrás
         </Link>
         {property.map((propertyData, index) => (
-          <div className="w-5/6 p-4 sm:p-8 bg-white m-auto rounded-2xl shadow-2xl flex flex-col md:flex-row  gap-6 ">
+          <div className="w-5/6 p-4 sm:p-8 bg-white m-auto my-5 rounded-2xl shadow-2xl flex flex-col md:flex-row  gap-6 " key={index}>
             <div className="flex flex-col gap-6 md:w-3/5">
               <img src={building} className="" />
               <div className="flex gap-1 justify-between flex-wrap md:flex-nowrap">
@@ -250,7 +255,7 @@ const PropertyDetails = () => {
                 {propertyData.ad_desc}
               </span>
               <span className="text-[#ff9203] text-md md:text-lg font-semibold">
-                {propertyData.show_price_ad ? `${propertyData.price} MXN` : ""}
+                {propertyData?.show_price_ad ? `${propertyData?.price} MXN` : ""}
               </span>
               <span className="text-[#6e6e70] text-md md:text-lg ">
                 {propertyData.street}
@@ -264,14 +269,14 @@ const PropertyDetails = () => {
               <div className="flex gap-2 items-center">
                 <img src={vector} className="w-4 h-4 " />
                 <span className="text-md sm:text-lg text-[#E5B219] font-semibold">
-                  Inmobiliaria {propertyData.user_id}{" "}
+                  Inmobiliaria {propertyData?.id}{" "}
                   {/* Replace with actual user data */}
                 </span>
               </div>
               <div className="flex gap-2 items-center">
                 <img src={date} className="w-4 h-4 " />
                 <span className="text-md sm:text-lg text-[#6e6e70] font-semibold">
-                  Creada {propertyData.creation_date}{" "}
+                Creada {propertyData ? formatDate(propertyData.created_at) : ""}
                   {/* Replace with actual creation date */}
                 </span>
               </div>
