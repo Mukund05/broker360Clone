@@ -8,16 +8,13 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [openCurrency, setOpenCurrency] = useState(false);
 
+  const handleCurrencyChange = (val) => {
+    onFormDataChange({ ...propertyData, currency: val });
+    setOpenCurrency(false);
+  };
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
   };
-
-  const [selectedCurrency, setSelectedCurrency] = useState("USD");
-
-  const handleCurrencyChange = (val) => {
-    setSelectedCurrency(val);
-  };
-
   const handleValue = (val) => () => {
     setActive(val);
     if (val === 0) {
@@ -127,7 +124,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
               Venta
             </span>
           </div>
-          {isChecked && <div className="sm:h-64 h-[28rem]"></div>}
+          {isChecked && <div className="sm:h-32 h-[28rem]"></div>}
           {isChecked && (
             <div className="bg-[#fffaea] w-full flex justify-center p-6 absolute left-0 mt-12 sm:mt-0">
               <div className="flex flex-col gap-4">
@@ -142,6 +139,14 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
                     <input
                       placeholder="250,458.00"
                       className=" overflow-hidden w-full focus:outline-none "
+                      name="price"
+                      value={propertyData.price}
+                      onChange={(e) =>
+                        onFormDataChange({
+                          ...propertyData,
+                          price: e.target.value,
+                        })
+                      }
                     />
                   </div>
                   <div className="relative p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md bg-white">
@@ -150,90 +155,40 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
                       onClick={() => setOpenCurrency(!openCurrency)}
                     >
                       <div className=" overflow-hidden w-full focus:outline-none flex justify-start">
-                        {selectedCurrency}
+                        {propertyData.currency}
                       </div>
 
                       <KeyboardArrowDownIcon className="" />
                       {openCurrency && (
-                        <div className="absolute top-10 w-full left-0 flex flex-col  bg-white p-2">
-                          <span
-                            className="w-full text-sm text-[#6E6E70] font-semibold text-start cursor-pointer hover:bg-[#002f6d] hover:text-white p-2 rounded-md"
-                            onClick={() => setSelectedCurrency("USD")}
-                          >
-                            USD
-                          </span>
-                          <span
-                            className="w-full text-sm text-[#6E6E70] font-semibold text-start cursor-pointer hover:bg-[#002f6d] hover:text-white p-2 rounded-md"
-                            onClick={() => setSelectedCurrency("MXN")}
-                          >
-                            MXN
-                          </span>
-                          <span
-                            className="w-full text-sm text-[#6E6E70] font-semibold text-start cursor-pointer hover:bg-[#002f6d] hover:text-white p-2 rounded-md"
-                            onClick={() => setSelectedCurrency("ARS")}
-                          >
-                            ARS
-                          </span>
-                          <span
-                            className="w-full text-sm text-[#6E6E70] font-semibold text-start cursor-pointer hover:bg-[#002f6d] hover:text-white p-2 rounded-md"
-                            onClick={() => setSelectedCurrency("BRL")}
-                          >
-                            BRL
-                          </span>
-                          <span
-                            className="w-full text-sm text-[#6E6E70] font-semibold text-start cursor-pointer hover:bg-[#002f6d] hover:text-white p-2 rounded-md"
-                            onClick={() => setSelectedCurrency("CLP")}
-                          >
-                            CLP
-                          </span>
-                          <span
-                            className="w-full text-sm text-[#6E6E70] font-semibold text-start cursor-pointer hover:bg-[#002f6d] hover:text-white p-2 rounded-md"
-                            onClick={() => setSelectedCurrency("COP")}
-                          >
-                            COP
-                          </span>
-                          <span
-                            className="w-full text-sm text-[#6E6E70] font-semibold text-start cursor-pointer hover:bg-[#002f6d] hover:text-white p-2 rounded-md"
-                            onClick={() => setSelectedCurrency("CRC")}
-                          >
-                            CRC
-                          </span>
-                          <span
-                            className="w-full text-sm text-[#6E6E70] font-semibold text-start cursor-pointer hover:bg-[#002f6d] hover:text-white p-2 rounded-md"
-                            onClick={() => setSelectedCurrency("DOP")}
-                          >
-                            DOP
-                          </span>
-                          <span
-                            className="w-full text-sm text-[#6E6E70] font-semibold text-start cursor-pointer hover:bg-[#002f6d] hover:text-white p-2 rounded-md"
-                            onClick={() => setSelectedCurrency("EGP")}
-                          >
-                            EGP
-                          </span>
-                          <span
-                            className="w-full text-sm text-[#6E6E70] font-semibold text-start cursor-pointer hover:bg-[#002f6d] hover:text-white p-2 rounded-md"
-                            onClick={() => setSelectedCurrency("EUR")}
-                          >
-                            EUR
-                          </span>
-                          <span
-                            className="w-full text-sm text-[#6E6E70] font-semibold text-start cursor-pointer hover:bg-[#002f6d] hover:text-white p-2 rounded-md"
-                            onClick={() => setSelectedCurrency("GTQ")}
-                          >
-                            GTQ
-                          </span>
-                          <span
-                            className="w-full text-sm text-[#6E6E70] font-semibold text-start cursor-pointer hover:bg-[#002f6d] hover:text-white p-2 rounded-md"
-                            onClick={() => setSelectedCurrency("PEN")}
-                          >
-                            PEN
-                          </span>
+                        <div className="absolute top-10 w-full left-0 flex flex-col bg-white p-2">
+                          {[
+                            "USD",
+                            "MXN",
+                            "ARS",
+                            "BRL",
+                            "CLP",
+                            "COP",
+                            "CRC",
+                            "DOP",
+                            "EGP",
+                            "EUR",
+                            "GTQ",
+                            "PEN",
+                          ].map((currency) => (
+                            <span
+                              key={currency}
+                              className="w-full text-sm text-[#6E6E70] font-semibold text-start cursor-pointer hover:bg-[#002f6d] hover:text-white p-2 rounded-md"
+                              onClick={() => handleCurrencyChange(currency)}
+                            >
+                              {currency}
+                            </span>
+                          ))}
                         </div>
                       )}
                     </div>
                   </div>
                 </div>
-                <div className="flex  justify-center gap-2 items-center flex-col sm:flex-row w-full">
+                {/* <div className="flex  justify-center gap-2 items-center flex-col sm:flex-row w-full">
                   <div className=" flex sm:justify-end">
                     <span className="text-[#686868] text-sm sm:text-md font-bold">
                       Precio basado en
@@ -279,7 +234,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
                     />
                     <KeyboardArrowDownIcon className="text-[#686868]" />
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           )}

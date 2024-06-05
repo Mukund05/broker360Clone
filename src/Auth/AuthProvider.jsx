@@ -5,32 +5,37 @@ import Api from "../Api";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("user")) || null
-  );
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true); // Add a loading state
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const navigate = useNavigate();
 
   useEffect(() => {
-    //need to check if token is valid or not
     const storedToken = localStorage.getItem("token");
+
     const getProfile = async () => {
       try {
         const res = await Api.getProfile(storedToken);
-        console.log("check user token ", res);
+        // console.log("check user token ", res);
         if (res.success) {
           setUser(res.data);
           setIsAuthenticated(true);
-          // navigate("/");            //redirect to requested page when credential is valid
+        } else {
+          setIsAuthenticated(false);
         }
       } catch (err) {
         console.error(err);
+        setIsAuthenticated(false);
+      } finally {
+        setLoading(false); // Set loading to false after checking token
       }
-    }
+    };
 
     if (storedToken) {
       getProfile();
+    } else {
+      setLoading(false); // No token means we're not authenticated, stop loading
     }
   }, []);
 
@@ -69,7 +74,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, loginAction, logOut ,isAuthenticated }}>
+    <AuthContext.Provider value={{ token, user, loginAction, logOut, isAuthenticated, loading }}>
       {children}
     </AuthContext.Provider>
   );

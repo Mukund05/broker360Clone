@@ -8,27 +8,53 @@ import CloseIcon from "@mui/icons-material/Close";
 import OpenWithIcon from "@mui/icons-material/OpenWith";
 import API from "../Api";
 
+const API_KEY = "AIzaSyBHFCI2kQqInrHRU67-hyHhIWqH7gusdmI";
+
 const MyProperties = () => {
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
   const [propData, setPropData] = useState(null);
   const [error, setError] = useState("");
+  const [mapSrc, setMapSrc] = useState(
+    "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d50597.87088943464!2d-59.02624100016744!3d-34.096484500267904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e6!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!5e0!3m2!1sen!2s!4v1649050342672!5m2!1sen!2s"
+  );
 
   // Get Property API call and loop for property card
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const response = await API.getProperties(); 
+        const response = await API.getProperties();
         console.log("response ", response);
-        if(response.success){
+        if (response.success) {
           setPropData(response?.message);
-        }else{
+        } else {
           setError(response?.data);
         }
       } catch (error) {
         setError(error.message);
       }
     };
+
+    const getUserLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            console.log("Latitude: ", latitude , "Longitude: ", longitude);
+            setMapSrc(
+              `https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d50597.87088943464!2d-59.02624100016744!3d-34.096484500267904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e6!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!5e0!3m2!1sen!2s!4v1649050342672!5m2!1sen!2s`
+            );
+          },
+          (error) => {
+            console.error("Error obtaining location: ", error);
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    };
+
+    getUserLocation();
 
     fetchProperty();
   }, []);
@@ -95,7 +121,7 @@ const MyProperties = () => {
           {/* Render iframe with random map by default */}
           <div className="overflow-hidden flex justify-end w-full">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d50597.87088943464!2d-59.02624100016744!3d-34.096484500267904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e6!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!5e0!3m2!1sen!2s!4v1649050342672!5m2!1sen!2s"
+              src={mapSrc}
               style={{ border: 0 }}
               loading="lazy"
               className="rounded-3xl md:rounded-s-none w-full h-[400px] md:h-[500px] overflow-hidden"
@@ -130,7 +156,9 @@ const MyProperties = () => {
             </div>
             <div className="flex justify-start text-[#6E6E70] gap-x-2 sm:gap-x-4">
               <button className="rounded-xl py-3 sm:px-4 px-4 text-white bg-[#002F6D] text-xs sm:text-sm flex justify-center items-center">
-                <span className="flex justify-center items-center">Ordenar</span>
+                <span className="flex justify-center items-center">
+                  Ordenar
+                </span>
                 <KeyboardArrowUpIcon className="text-white" />
               </button>
             </div>
@@ -139,7 +167,9 @@ const MyProperties = () => {
 
           <div className="flex justify-between w-2/3 gap-x-6 items-center">
             <span className="text-[#FF9203] text-sm sm:text-md font-bold">
-              {propData ? `1-${propData?.length} de ${propData?.length} propiedades` : "Cargando..."}
+              {propData
+                ? `1-${propData?.length} de ${propData?.length} propiedades`
+                : "Cargando..."}
             </span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-8 items-center w-full">

@@ -9,7 +9,7 @@ import edit from "../assets/edit.png";
 import play from "../assets/play.png";
 import question from "../assets/question.png";
 import info from "../assets/info.png";
-import { useAuth } from "../Auth/AuthProvider"; 
+import { useAuth } from "../Auth/AuthProvider";
 
 const CustomHeader = ({ index }) => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const CustomHeader = ({ index }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [arrowUp, setArrowUp] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const { logout } = useAuth();
+  const { logOut } = useAuth();
 
   const setIndex = (index) => {
     if (index == 0) navigate("/view-properties");
@@ -70,7 +70,7 @@ const CustomHeader = ({ index }) => {
             </button>
             <button
               className="bg-[#011B4E]  text-white font-semibold py-2 px-6 sm:px-12 rounded-3xl text-xs sm:text-md"
-              onClick={logout}
+              onClick={logOut}
             >
               Si, quiero
             </button>
@@ -82,7 +82,7 @@ const CustomHeader = ({ index }) => {
 
   return (
     <div className="bg-white">
-      <div className="relative top-0 left-0 w-full flex justify-between p-4">
+      <div className="relative top-0 left-0 w-full flex justify-between p-4 z-10">
         <Link to="/">
           <img src={logo} alt="error loading " className="w-32 sm:w-fit" />
         </Link>

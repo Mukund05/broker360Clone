@@ -17,6 +17,8 @@ const AddPropertyData = () => {
     ad_desc: "",
     operation_type: "rent",
     show_price_ad: true,
+    price: 0,
+    currency: "USD",
     bedroom: 0,
     bathrooms: 0,
     half_bath: 0,
