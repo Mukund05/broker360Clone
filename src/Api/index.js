@@ -161,6 +161,15 @@ export const getCurrentProperty = async (id) => {
   }
 }
 
+export const getUserProperty = async (id) => {
+  try {
+    const response = await api.get(`/properties/${id}/user`);
+    return response.data;
+  }catch (error){
+    handleError(error);
+  }
+}
+
 export const sendGallery = async (data) => {
   try {
     const response =  await api.post("/properties/images",data ,{
@@ -209,5 +218,6 @@ export default {
   getProperties,
   getCurrentProperty,
   sendGallery,
-  getGallery
+  getGallery,
+  getUserProperty
 };

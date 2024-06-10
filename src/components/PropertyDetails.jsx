@@ -28,7 +28,7 @@ const PropertyDetails = () => {
   const [images, setImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
-  
+
   const notify = () =>
     toast.success(
       <div>
@@ -214,7 +214,9 @@ const PropertyDetails = () => {
             <div className="relative">
               {images.length > 0 ? (
                 <img
-                  src={`${import.meta.env.VITE_BASE_URL}${images[currentImageIndex].url}`}
+                  src={`${import.meta.env.VITE_BASE_URL}${
+                    images[currentImageIndex].url
+                  }`}
                   alt="Property"
                   className="w-80 rounded-lg"
                 />
@@ -262,7 +264,11 @@ const PropertyDetails = () => {
                   navigate("/my-properties/add-property/property-details");
                 }}
               >
-                <img src={edit} alt="Edit Details" className="w-4 text-[#011B4E]" />
+                <img
+                  src={edit}
+                  alt="Edit Details"
+                  className="w-4 text-[#011B4E]"
+                />
                 <span className="text-[#011B4E] text-xs">Editar detalles</span>
               </div>
               <div
@@ -271,7 +277,9 @@ const PropertyDetails = () => {
                 } hover:bg-[#d4d9e1] flex flex-col gap-1 justify-center cursor-pointer  items-center w-24 text-center font-semibold leading-4 p-2 rounded-lg`}
                 onClick={() => {
                   setGrayActive(2);
-                  navigate("/my-properties/add-property/add-gallery",{ state: { propertId: id, } });
+                  navigate("/my-properties/add-property/add-gallery", {
+                    state: { propertId: id },
+                  });
                 }}
               >
                 <img src={gallery} alt="Edit Gallery" className="w-4" />
@@ -287,7 +295,9 @@ const PropertyDetails = () => {
                 }}
               >
                 <img src={clock} alt="Schedule Reminder" className="w-4" />
-                <span className="text-[#011B4E] text-xs">Programar recordatorio</span>
+                <span className="text-[#011B4E] text-xs">
+                  Programar recordatorio
+                </span>
               </div>
               <div
                 className={`${
@@ -325,8 +335,7 @@ const PropertyDetails = () => {
             <div className="flex gap-2 items-center">
               <img src={date} alt="Date" className="w-4 h-4" />
               <span className="text-md sm:text-lg text-[#6e6e70] font-semibold">
-                Creada{" "}
-                {propertyData ? formatDate(propertyData.created_at) : ""}
+                Creada {propertyData ? formatDate(propertyData.created_at) : ""}
               </span>
             </div>
           </div>

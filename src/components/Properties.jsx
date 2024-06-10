@@ -1,11 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CustomHeader from "../elements/CustomHeader";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 import PropertyCard from "../elements/PropertyCard";
 import Footer from "../elements/Footer";
+import Api from "../Api";
 
 const Properties = () => {
+  const [propData, setPropData] = useState([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchProperty = async () => {
+      try {
+        const response = await Api.getProperties();
+        console.log("response ", response);
+        if (response.success) {
+          setPropData(response?.message);
+        } else {
+          setError(response?.data);
+        }
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchProperty();
+  }, []);
+
   return (
     <div className="bg-[#eff6ff]">
       <CustomHeader index={1} />
@@ -43,22 +65,26 @@ const Properties = () => {
                 </div>
               </div>
               <div className="border-t border-[#6E6E70] my-4"></div>
-              <div className="flex justify-between md:w-2/3 gap-x-6 items-center  sm:m-0">
+              <div className="flex justify-between w-2/3 gap-x-6 items-center">
                 <span className="text-[#FF9203] text-sm sm:text-md font-bold">
-                  1-2 de 3 propiedades
+                  {propData
+                    ? `1-${propData?.length} de ${propData?.length} propiedades`
+                    : "Cargando..."}
                 </span>
               </div>
-              <div className="flex flex-col gap-y-8 md:flex-row gap-x-2 flex-wrap items-center justify-between">
-                <PropertyCard
-                  heading="svdhasvdhasvhdbahsd"
-                  content="ahgdfahsgvdasbhd"
-                  route="/properties/property-details"
-                />
-                <PropertyCard
-                  heading="svdhasvdhasvhdbahsd"
-                  content="ahgdfahsgvdasbhd"
-                  route="/properties/property-details"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-8 items-center w-full">
+                {propData ? (
+                  propData?.map((property, index) => (
+                    <PropertyCard
+                      key={index}
+                      heading={property}
+                      property={property}
+                      route={`/my-property/property-details/${property}`}
+                    />
+                  ))
+                ) : (
+                  <div>Cargando propiedades...</div>
+                )}
               </div>
             </div>
           </div>

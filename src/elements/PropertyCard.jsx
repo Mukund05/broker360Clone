@@ -13,30 +13,21 @@ const PropertyCard = ({ property }) => {
   const navigate = useNavigate();
   const [imageError, setImageError] = useState({});
 
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+
   const handlePrev = () => {
     if (slide > 0) setSlide(slide - 1);
-    else setSlide(data.length - 1);
+    else setSlide(property.images.length - 1);
   };
 
   const handleNext = () => {
-    if (slide < data.length - 1) setSlide(slide + 1);
+    if (slide < property.images.length - 1) setSlide(slide + 1);
     else setSlide(0);
   };
 
   const handleImageError = (index) => {
     setImageError((prev) => ({ ...prev, [index]: true }));
   };
-
-  const data = [
-    propertyImg,
-    propertyImg,
-    propertyImg,
-    propertyImg,
-    propertyImg,
-    propertyImg,
-    propertyImg,
-    propertyImg,
-  ];
 
   return (
     <div className="min-w-80 sm:min-w-80 md:w-80 bg-white border border-gray-200 rounded-lg shadow-lg transition-transform transform hover:scale-105">
@@ -54,7 +45,7 @@ const PropertyCard = ({ property }) => {
           <ChevronRightIcon className="text-2xl" />
         </div>
         <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1 z-10">
-          {data.map((_, index) => (
+          {property.images.map((_, index) => (
             <div
               className={`p-1 ${
                 index === slide ? "bg-white" : "bg-[#D9D9D9] opacity-40"
@@ -65,18 +56,27 @@ const PropertyCard = ({ property }) => {
           ))}
         </div>
         <div className="custom-container scroll-smooth flex relative">
-          {data.map((img, index) => (
-            <img
-              className={`rounded-t-lg overflow-x-hidden min-w-80 ${
-                slide === index ? "block" : "hidden"
-              }`}
-              src={imageError[index] ? propertyImg : img}
-              alt=""
-              key={index}
-              onError={() => handleImageError(index)}
-            />
-          ))}
+          {(property.images.length > 0 ? property.images : [propertyImg]).map(
+            (img, index) => (
+              <img
+                className={`rounded-t-lg overflow-x-hidden w-full h-60 object-cover ${
+                  slide === index ? "block" : "hidden"
+                }`}
+                src={
+                  imageError[index]
+                    ? propertyImg
+                    : property.images.length > 0
+                    ? `${baseUrl}${img.url}`
+                    : img
+                }
+                alt=""
+                key={index}
+                onError={() => handleImageError(index)}
+              />
+            )
+          )}
         </div>
+
         <div className="bg-[#bdc2c6] p-1 absolute bottom-3 right-3 rounded-full">
           <FavoriteBorderIcon className="text-[#011B4E]" />
         </div>
@@ -89,13 +89,14 @@ const PropertyCard = ({ property }) => {
       </div>
       <div
         className="p-4 flex flex-col gap-y-2 cursor-pointer"
-        onClick={() => navigate(`/my-property/property-details/${property?.id || ""}`)}
+        onClick={() =>
+          navigate(`/my-property/property-details/${property?.id || ""}`)
+        }
       >
         <div className="flex justify-between items-center">
           <span className="text-[#FF9203] font-bold text-lg md:text-xl">
             {property?.show_price_ad
-              ? `${property?.show_price_ad
-                || "N/A"} MXN`
+              ? `${property?.show_price_ad || "N/A"} MXN`
               : "Precio no disponible"}
           </span>
           <span className="text-xs md:text-sm text-end font-semibold text-[#6E6E70]">
@@ -111,15 +112,21 @@ const PropertyCard = ({ property }) => {
         <div className="flex gap-4 items-center text-[#6D737A]">
           <div className="flex gap-1 items-center">
             <BathtubIcon className="text-lg" />
-            <span className="font-bold text-md md:text-lg">{property?.bathrooms || 0}</span>
+            <span className="font-bold text-md md:text-lg">
+              {property?.bathrooms || 0}
+            </span>
           </div>
           <div className="flex gap-1 items-center">
             <BedroomParentIcon className="text-lg" />
-            <span className="font-bold text-md md:text-lg">{property?.bedrooms || 0}</span>
+            <span className="font-bold text-md md:text-lg">
+              {property?.bedrooms || 0}
+            </span>
           </div>
           <div className="flex gap-1 items-center">
             <DirectionsCarIcon className="text-lg" />
-            <span className="font-bold text-md md:text-lg">{property?.parking_lots || 0}</span>
+            <span className="font-bold text-md md:text-lg">
+              {property?.parking_lots || 0}
+            </span>
           </div>
         </div>
         <span className="text-[#6E6E70] text-sm md:text-md font-semibold">
