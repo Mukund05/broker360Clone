@@ -5,7 +5,21 @@ const Form3 = ({ propertyData, onFormDataChange }) => {
   const [checkedItems, setCheckedItems] = useState({});
 
   useEffect(() => {
-    onFormDataChange({ ...propertyData, property_features:checkedItems.toString() });
+    if (propertyData.property_features) {
+      const featuresArray = propertyData.property_features.split(",").map(feature => feature.trim());
+      const initialCheckedItems = featuresArray.reduce((acc, feature) => {
+        acc[feature] = true;
+        return acc;
+      }, {});
+      setCheckedItems(initialCheckedItems);
+    }
+  }, [propertyData.property_features]);
+
+  useEffect(() => {
+    const selectedFeatures = Object.keys(checkedItems)
+      .filter((key) => checkedItems[key])
+      .join(", ");
+    onFormDataChange({ ...propertyData, property_features: selectedFeatures });
   }, [checkedItems]);
 
   const handleCheckboxChange = (event) => {

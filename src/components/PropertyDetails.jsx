@@ -261,7 +261,7 @@ const PropertyDetails = () => {
                 } hover:bg-[#d4d9e1] flex flex-col gap-1 justify-center cursor-pointer  items-center w-30 text-center font-semibold leading-4 p-2 rounded-lg`}
                 onClick={() => {
                   setGrayActive(1);
-                  navigate("/my-properties/add-property/property-details");
+                  navigate("/my-properties/add-property/property-details" ,{state : {data : propertyData}});
                 }}
               >
                 <img
