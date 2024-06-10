@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import CustomHeader from "../elements/CustomHeader";
 import Footer from "../elements/Footer";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import earth from "../assets/earth.png";
 import edit from "../assets/edit.png";
 import gallery from "../assets/gallery.png";
@@ -23,6 +23,10 @@ import { CircularProgress } from "@mui/material";
 
 const PropertyDetails = () => {
   const navigate = useNavigate();
+  let { id } = useParams();
+  console.log("id of current property",id)
+
+  //make a request to current property and put in the state variable 
 
   const notify = () =>
     toast.success(
@@ -36,14 +40,14 @@ const PropertyDetails = () => {
   const [active, setActive] = useState(0);
   const [grayActive, setGrayActive] = useState(null);
   const [dateModal, setDateModal] = useState(false);
-  const [property, setProperty] = useState(null);
+  const [propertyData, setPropertyData] = useState(null);
 
   useEffect(() => {
     const fetchPropertyData = async () => {
       try {
-        const response = await Api.getProperties(); // Replace with your API endpoint
+        const response = await Api.getCurrentProperty(id); // Replace with your API endpoint
         console.log("Property Data: ", response.message);
-        setProperty(response.message);
+        setPropertyData(response.message);
       } catch (error) {
         console.error("Error fetching property data:", error);
       }
@@ -146,7 +150,7 @@ const PropertyDetails = () => {
     navigate(-1); // This will take you back to the previous page/component
   };
 
-  if (!property) {
+  if (!propertyData) {
     return (
       <div className="flex justify-center items-center h-screen">
         <CircularProgress />
@@ -172,10 +176,9 @@ const PropertyDetails = () => {
           <KeyboardBackspaceIcon />
           Atrás
         </Link>
-        {property.map((propertyData, index) => (
+        {/* {property.map((propertyData, index) => ( */}
           <div
             className="w-5/6 p-4 sm:p-8 bg-white m-auto my-5 rounded-2xl shadow-2xl flex flex-col md:flex-row  gap-6 "
-            key={index}
           >
             <div className="flex flex-col gap-6 md:w-3/5">
               <img src={building} className="" />
@@ -288,7 +291,7 @@ const PropertyDetails = () => {
               </div>
             </div>
           </div>
-        ))}
+        {/* ))} */}
       </div>
       <Footer />
       {showModal && <Modal />}

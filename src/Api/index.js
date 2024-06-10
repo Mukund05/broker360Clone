@@ -152,6 +152,15 @@ export const getProperties = async () => {
   }
 };
 
+export const getCurrentProperty = async (id) => {
+  try {
+    const response = await api.get(`/properties/${id}`)
+    return response.data;
+  }catch (error){
+    handleError(error);
+  }
+}
+
 // Logout
 export const logout = () => {
   localStorage.removeItem("token");
@@ -176,4 +185,5 @@ export default {
   updateProfile,
   sendProperty,
   getProperties,
+  getCurrentProperty
 };

@@ -8,7 +8,6 @@ import upload from "../assets/upload.png";
 import remove from "../assets/delete.png";
 import retry from "../assets/retry.png";
 import star from "../assets/start.png";
-import bgimg from "../assets/bgimg.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -19,10 +18,12 @@ const ShareGallery = () => {
   const [videoURL, setVideoURL] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [embeddedURL, setEmbeddedURL] = useState("");
+  const [videoURLs, setVideoURLs] = useState([]);
 
   const handleFileUpload = (event) => {
     const files = event.target.files;
-    setUploadedImages([...uploadedImages, ...files]);
+    const fileNames = Array.from(files).map((file) => file.name);
+    setUploadedImages((prevImages) => [...prevImages, ...fileNames]);
   };
 
   const handleInputChange = (event) => {
@@ -42,15 +43,46 @@ const ShareGallery = () => {
       // Update showPreview state with the embedded URL
       setEmbeddedURL(embeddedURL);
       setShowPreview(true);
+      setVideoURLs((prevURLs) => [...prevURLs, videoURL]);
+      setVideoURL("");
     } else {
       toast.error("Invalid YouTube URL", {
         position: toast.POSITION.BOTTOM_CENTER,
       });
     }
   };
+
+  const handlePost = () => {
+    const data = {
+      images: uploadedImages,
+      videos: videoURLs,
+    };
+
+    fetch("/api/property", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        toast.success("Property details saved successfully!", {
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
+        navigate("/my-property/property-details");
+      })
+      .catch((error) => {
+        toast.error("Error saving property details", {
+          position: toast.POSITION.BOTTOM_CENTER,
+        });
+      });
+  };
+
   const goBack = () => {
     navigate(-1); // This will take you back to the previous page/component
   };
+
   return (
     <div className="bg-[#EFF6FF]">
       <CustomHeader index={0} />
@@ -175,9 +207,7 @@ const ShareGallery = () => {
               </span>
               <button
                 className="bg-[#011B4E]  text-white font-semibold py-3 px-5 sm:px-10 rounded-3xl text-xs sm:text-md"
-                onClick={() => {
-                  navigate("/my-property/property-details");
-                }}
+                onClick={handlePost}
               >
                 Publicar
               </button>

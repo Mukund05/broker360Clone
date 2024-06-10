@@ -62,7 +62,7 @@ function App() {
               <Route path="/Edit-profile" Component={EditProfile} />
               <Route path="/help" Component={DropdownHelp} />
               <Route path="/payment-method-and-frequency" Component={PaymentFreq} />
-              <Route path="/my-property/property-details" Component={PropertyDetails} />
+              <Route path="/my-property/property-details/:id" Component={PropertyDetails} />
               <Route path="/configurations" Component={DropdownSettings} />
               <Route path="/my-properties/add-property/property-details" Component={AddPropertyData} />
               <Route path="/my-properties/add-property/add-gallery" Component={ShareGallery} />
