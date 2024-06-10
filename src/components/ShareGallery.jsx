@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import CustomHeader from "../elements/CustomHeader";
 import Footer from "../elements/Footer";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import line from "../assets/line2.png";
 import upload from "../assets/upload.png";
@@ -10,6 +10,7 @@ import retry from "../assets/retry.png";
 import star from "../assets/start.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Api from "../Api";
 
 const ShareGallery = () => {
   const navigate = useNavigate();
@@ -20,10 +21,12 @@ const ShareGallery = () => {
   const [embeddedURL, setEmbeddedURL] = useState("");
   const [videoURLs, setVideoURLs] = useState([]);
 
+  const { state } = useLocation();
+  const { propertId } = state;
+
   const handleFileUpload = (event) => {
-    const files = event.target.files;
-    const fileNames = Array.from(files).map((file) => file.name);
-    setUploadedImages((prevImages) => [...prevImages, ...fileNames]);
+    const files = Array.from(event.target.files);
+    setUploadedImages((prevImages) => [...prevImages, ...files]);
   };
 
   const handleInputChange = (event) => {
@@ -32,15 +35,9 @@ const ShareGallery = () => {
   };
 
   const handlePreview = () => {
-    // Extract video ID from the URL
     const videoID = videoURL.split("v=")[1];
-
-    // Validate the extracted video ID
     if (videoID) {
-      // Construct the embedded URL
       const embeddedURL = `https://www.youtube.com/embed/${videoID}`;
-
-      // Update showPreview state with the embedded URL
       setEmbeddedURL(embeddedURL);
       setShowPreview(true);
       setVideoURLs((prevURLs) => [...prevURLs, videoURL]);
@@ -52,35 +49,50 @@ const ShareGallery = () => {
     }
   };
 
-  const handlePost = () => {
+  const handlePost = async () => {
+    // const imageNames = uploadedImages.map((file) => file.name);
     const data = {
-      images: uploadedImages,
-      videos: videoURLs,
+      property_image: [...uploadedImages],
+      property_id: propertId,
     };
+    // const data = new FormData();
+    // data.append("property_image",uploadedImages)
+    // data.append("property_id",6)
 
-    fetch("/api/property", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        toast.success("Property details saved successfully!", {
-          position: toast.POSITION.BOTTOM_CENTER,
+    console.log(data);
+
+    try {
+      const response = await Api.sendGallery(data);
+      console.log("images response", response);
+      if (response.success) {
+        toast("Product Images Added Successfully!", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
         });
-        navigate("/my-property/property-details");
-      })
-      .catch((error) => {
-        toast.error("Error saving property details", {
-          position: toast.POSITION.BOTTOM_CENTER,
-        });
+        goBack();
+      }
+    } catch (error) {
+      toast.error("Something Wrong. Try Again!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
+    }
   };
 
   const goBack = () => {
-    navigate(-1); // This will take you back to the previous page/component
+    navigate(-1);
   };
 
   return (
@@ -157,6 +169,14 @@ const ShareGallery = () => {
                   src={remove}
                   className="w-fit cursor-pointer"
                   alt="remove-icon"
+                  onClick={() =>
+                    setUploadedImages(
+                      uploadedImages.filter(
+                        (img) =>
+                          img !== uploadedImages[uploadedImages.length - 1]
+                      )
+                    )
+                  }
                 />
                 <img
                   src={retry}
@@ -169,7 +189,7 @@ const ShareGallery = () => {
         </div>
       </div>
       <div className="my-12 flex flex-col gap-4  w-[90%] sm:w-3/5 m-auto p-6">
-        <span className="text-xl sm:text-2xl text-[#011B4E] text-start font-bold ">
+        {/* <span className="text-xl sm:text-2xl text-[#011B4E] text-start font-bold ">
           Videos (Opcional)
         </span>
         <span className="text-[#6e6e70] text-sm font-semibold">
@@ -189,35 +209,35 @@ const ShareGallery = () => {
             Agregar
           </button>
         </div>
-        {showPreview && (
-          <div className="flex flex-col gap-2 items-center">
-            <iframe
-              width=""
-              height=""
-              src={embeddedURL}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              className="rounded-xl w-[90%] h-40 xs:h-64"
-              allowFullScreen
-            ></iframe>
-            <div className="flex justify-center gap-5 items-center my-3">
-              <span className="text-[#35278c] text-sm font-bold cursor-pointer">
-                Guardar como borrador
-              </span>
-              <button
-                className="bg-[#011B4E]  text-white font-semibold py-3 px-5 sm:px-10 rounded-3xl text-xs sm:text-md"
-                onClick={handlePost}
-              >
-                Publicar
-              </button>
+        {videoURLs.length > 0 &&
+          videoURLs.map((url, index) => (
+            <div key={index} className="flex flex-col gap-2 items-center">
+              <iframe
+                width=""
+                height=""
+                src={`https://www.youtube.com/embed/${url.split("v=")[1]}`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                className="rounded-xl w-[90%] h-40 xs:h-64"
+                allowFullScreen
+              ></iframe>
             </div>
-            <div className="text-[#35278C] flex justify-center w-auto m-auto cursor-pointer font-semibold">
-              Cancelar
-            </div>
-          </div>
-        )}
-
+          ))} */}
+        <div className="flex justify-center gap-5 items-center my-3">
+          {/* <span className="text-[#35278c] text-sm font-bold cursor-pointer">
+            Guardar como borrador
+          </span> */}
+          <button
+            className="bg-[#011B4E]  text-white font-semibold py-3 px-5 sm:px-10 rounded-3xl text-xs sm:text-md"
+            onClick={handlePost}
+          >
+            Publicar
+          </button>
+        </div>
+        <div className="text-[#35278C] flex justify-center w-auto m-auto cursor-pointer font-semibold">
+          Cancelar
+        </div>
         <ToastContainer />
       </div>
       <Footer />

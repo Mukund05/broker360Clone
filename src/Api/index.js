@@ -161,6 +161,28 @@ export const getCurrentProperty = async (id) => {
   }
 }
 
+export const sendGallery = async (data) => {
+  try {
+    const response =  await api.post("/properties/images",data ,{
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+    })
+    return response.data;
+  } catch (error){
+    handleError(error);
+  }
+}
+
+export const getGallery = async (id) => {
+  try {
+    const response = await api.get(`/properties/${id}/images`);
+    return response.data;
+  } catch (error) {
+    handleError(error)
+  }
+}
+
 // Logout
 export const logout = () => {
   localStorage.removeItem("token");
@@ -185,5 +207,7 @@ export default {
   updateProfile,
   sendProperty,
   getProperties,
-  getCurrentProperty
+  getCurrentProperty,
+  sendGallery,
+  getGallery
 };
