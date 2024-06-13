@@ -22,10 +22,10 @@ const MyProperties = () => {
   // Get Property API call and loop for property card
   useEffect(() => {
     const fetchProperty = async () => {
-      const userId = JSON.parse(localStorage.getItem('userId'));
-     
+      const user = JSON.parse(localStorage.getItem('user'));
+      
       try {
-        const response = await API.getUserProperty(userId);
+        const response = await API.getUserProperty(user.id);
         console.log("response ", response);
         if (response.success) {
           setPropData(response?.data);

@@ -25,7 +25,7 @@ const EditProfile = () => {
     Firstname: "",
     Lastname: "",
     email: "",
-    emails:"",
+    emails: "",
     number: "",
     agency_name: "",
     lang: "",
@@ -38,7 +38,6 @@ const EditProfile = () => {
       try {
         const response = await Api.getProfile();
         const profileData = response?.data;
-        console.log("Profile Data: ", response?.data);
         setData(profileData);
         setFormData({
           id: profileData?.id || "",
@@ -100,23 +99,19 @@ const EditProfile = () => {
       updateData.append("lang", formData.lang);
       updateData.append("timezone", formData.timezone);
       updateData.append("emails", formData.emails);
-      
+
       if (formData.profile_url) {
         updateData.append("profile_url", formData.profile_url);
       }
-   
+
       const response = await Api.updateProfile(updateData, formData.id);
-      console.log("Profile Updated: ", response?.data);
       navigate("/home");
     } catch (error) {
-      console.error(
-        "Failed to update profile. ",
-        error
-      );
-      setError(
-        error?.response?.data?.message ||
-          "Failed to update profile. Please try again."
-      );
+      console.error("Failed to update profile. ", error);
+      // setError(
+      //   error?.response?.data?.message ||
+      //     "Failed to update profile. Please try again."
+      // );
     }
   };
 
@@ -157,7 +152,12 @@ const EditProfile = () => {
               Editar mi perfil
             </span>
             <div className="relative">
-            <img src={profile} className="h-20 w-20 " />
+              <input
+                type="file"
+                name="profile_url"
+                onChange={handleImageUpload}
+              />
+              <img src={profile} className="h-20 w-20 " />
               <img src={camera} className="absolute top-14 left-14" />
             </div>
             <div className="flex gap-y-4 flex-col text-[#686868] text-sm sm:text-md w-full">
@@ -197,7 +197,7 @@ const EditProfile = () => {
                   className="border p-2 rounded-md border-[#8692A6] w-full ml-2"
                   placeholder="Escribe el nombre de tu inmobiliaria"
                   name="agency_name"
-                  value={formData.agency_name} 
+                  value={formData.agency_name}
                   onChange={handleChange}
                 />
               </div>

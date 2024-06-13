@@ -29,6 +29,10 @@ const PropertyCard = ({ property }) => {
     setImageError((prev) => ({ ...prev, [index]: true }));
   };
 
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   return (
     <div className="min-w-80 sm:min-w-80 md:w-80 bg-white border border-gray-200 rounded-lg shadow-lg transition-transform transform hover:scale-105">
       <div className="relative">
@@ -55,19 +59,19 @@ const PropertyCard = ({ property }) => {
             ></div>
           ))}
         </div>
-        <div className="custom-container scroll-smooth flex relative">
+        <div className="custom-container scroll-smooth flex relative h-60">
           {(property.images.length > 0 ? property.images : [propertyImg]).map(
             (img, index) => (
               <img
-                className={`rounded-t-lg overflow-x-hidden w-full h-60 object-cover ${
+                className={`rounded-t-lg overflow-x-hidden w-full object-cover items-center ${
                   slide === index ? "block" : "hidden"
                 }`}
                 src={
                   imageError[index]
-                    ? propertyImg
-                    : property.images.length > 0
+                    ? `${baseUrl}dummy.jpg`
+                    : property.images.length > 0 && img.url
                     ? `${baseUrl}${img.url}`
-                    : img
+                    : "dummy.jpg"
                 }
                 alt=""
                 key={index}
@@ -81,10 +85,10 @@ const PropertyCard = ({ property }) => {
           <FavoriteBorderIcon className="text-[#011B4E]" />
         </div>
         <button className="text-white bg-[#6E6E70] text-xs md:text-sm rounded-md absolute top-3 left-3 cursor-pointer font-semibold p-1 md:p-2">
-          {property?.ad_type || "Tipo de anuncio"}
+          {capitalizeFirstLetter(property?.ad_type) || "Tipo de anuncio"}
         </button>
         <button className="text-white bg-[#011B4E] text-xs md:text-sm rounded-md absolute top-3 right-3 cursor-pointer font-semibold p-1 md:p-2">
-          {property?.operation_type || "Tipo de operación"}
+          {capitalizeFirstLetter(property?.operation_type) || "Tipo de operación"}
         </button>
       </div>
       <div
@@ -100,31 +104,29 @@ const PropertyCard = ({ property }) => {
               : "Precio no disponible"}
           </span>
           <span className="text-xs md:text-sm text-end font-semibold text-[#6E6E70]">
-            {property?.type || "Descripción del anuncio"}
+            {capitalizeFirstLetter(property?.type) || "Descripción del anuncio"}
           </span>
         </div>
         <span className="text-[#052682] text-md md:text-lg font-bold">
-          {property?.ad_type || "Encabezado"}
+          {capitalizeFirstLetter(property?.ad_type) || "Encabezado"}
         </span>
         <span className="text-[#6E6E70] text-sm md:text-md">
-          {property?.ad_desc || "Descripción de la propiedad"}
+          {capitalizeFirstLetter(property?.ad_desc) || "Descripción de la propiedad"}
         </span>
         <div className="flex gap-4 items-center text-[#6D737A]">
           <div className="flex gap-1 items-center">
             <BathtubIcon className="text-lg" />
-            <span className="font-bold text-md md:text-lg">
+            <span className="font-bold text-sm">
               {property?.bathrooms || 0}
             </span>
           </div>
           <div className="flex gap-1 items-center">
             <BedroomParentIcon className="text-lg" />
-            <span className="font-bold text-md md:text-lg">
-              {property?.bedrooms || 0}
-            </span>
+            <span className="font-bold text-sm">{property?.bedrooms || 0}</span>
           </div>
           <div className="flex gap-1 items-center">
             <DirectionsCarIcon className="text-lg" />
-            <span className="font-bold text-md md:text-lg">
+            <span className="font-bold text-sm">
               {property?.parking_lots || 0}
             </span>
           </div>
