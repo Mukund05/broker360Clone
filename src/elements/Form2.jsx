@@ -77,6 +77,7 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
         </div>
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
           <input
+          type="number"
             placeholder="Ninguno"
             className=" overflow-hidden w-full  "
             name="postal_code"

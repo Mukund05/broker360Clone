@@ -54,7 +54,7 @@ const AuthProvider = ({ children }) => {
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
 
-        navigate("/dashboard"); // Redirect to dashboard after login - update the path if needed
+        navigate("/my-properties"); // Redirect to dashboard after login - update the path if needed
         return { success: true };
       }
       throw new Error(res.message);
