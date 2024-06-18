@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../assets/logo.net.png";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -10,6 +10,7 @@ import play from "../assets/play.png";
 import question from "../assets/question.png";
 import info from "../assets/info.png";
 import { useAuth } from "../Auth/AuthProvider";
+import Api from "../Api";
 
 const CustomHeader = ({ index }) => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const CustomHeader = ({ index }) => {
   const [arrowUp, setArrowUp] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const { logOut } = useAuth();
+  const { profile_url } = JSON.parse(localStorage.getItem("user") || null);
 
   const setIndex = (index) => {
     if (index == 0) navigate("/view-properties");
@@ -183,7 +185,10 @@ const CustomHeader = ({ index }) => {
         </ul>
 
         <div className="flex items-center relative">
-          <img src={profile} className="h-8 w-8" />
+          <img
+            src={`${import.meta.env.VITE_BASE_URL}${profile_url || profile}`}
+            className="h-8 w-8"
+          />
           {arrowUp ? (
             <KeyboardArrowUpIcon
               className="text-gray-500 ml-3 cursor-pointer"

@@ -123,18 +123,19 @@ if (!propertyData.key_code) newErrors.key_code = "Key code is required.";
       const user = await Api.getProfile();
       const updatedPropertyData = {
         ...propertyData,
-        user_id: user.id,
+        user_id: user?.data?.id,
       };
-
+      
+      
       let response;
       if (isUpdate) {
         response = await Api.updateProperty(data.id, updatedPropertyData);
       } else {
         response = await Api.sendProperty(updatedPropertyData);
       }
-
-      console.log("Property Submitted: ", response);
+      
       navigate("/my-properties");
+      console.log("Property Submitted: ", response);
     } catch (error) {
       console.error("Failed to submit property: ", error);
     }
