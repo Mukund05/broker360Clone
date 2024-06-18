@@ -43,7 +43,6 @@ const AddPropertyData = () => {
     share_commission: 0,
     commission_percent: 0,
     condition_sharing: "",
-    price:1,
     longitude_latitude:""
   });
 
