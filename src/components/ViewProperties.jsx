@@ -31,11 +31,10 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 const ViewProperties = () => {
   const [box, setBox] = useState(null);
   const [mapSrc, setMapSrc] = useState("");
-  useEffect(() => {
-    setBox(document.querySelector(".container-carousel"));
-  }, []);
 
   useEffect(() => {
+    setBox(document.querySelector(".container-carousel"));
+
     // Get the user's current location
     const getUserLocation = () => {
       if (navigator.geolocation) {
@@ -48,13 +47,18 @@ const ViewProperties = () => {
           },
           (error) => {
             console.error("Error obtaining location: ", error);
+            // Use a default location if the user denies the location request
             setMapSrc(
-              "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d50597.87088943464!2d-59.02624100016744!3d-34.096484500267904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e6!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!5e0!3m2!1sen!2s!4v1649050342672!5m2!1sen!2s"
+              "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.002621439373!2d-99.137835!3d19.433795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff3623b3f8af%3A0x84c459ce87c50de7!2sPlaza%20de%20la%20Constituci%C3%B3n%2C%20Centro%20Hist%C3%B3rico%2C%20Centro%2C%2006000%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX%2C%20Mexico!5e0!3m2!1sen!2sus!4v1623943590070!5m2!1sen!2sus"
             );
           }
         );
       } else {
         console.error("Geolocation is not supported by this browser.");
+        // Use a default location if geolocation is not supported
+        setMapSrc(
+          "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.002621439373!2d-99.137835!3d19.433795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff3623b3f8af%3A0x84c459ce87c50de7!2sPlaza%20de%20la%20Constituci%C3%B3n%2C%20Centro%20Hist%C3%B3rico%2C%20Centro%2C%2006000%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX%2C%20Mexico!5e0!3m2!1sen!2sus!4v1623943590070!5m2!1sen!2sus"
+        );
       }
     };
 
@@ -231,7 +235,7 @@ const ViewProperties = () => {
             <div className="border-xl w-full">
               {/* Render iframe with random map by default */}
               <div className="">
-              <iframe
+                <iframe
                   src={mapSrc}
                   className="rounded-2xl w-full h-[300px]"
                   style={{ border: 0 }}
