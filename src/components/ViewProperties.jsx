@@ -30,8 +30,35 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const ViewProperties = () => {
   const [box, setBox] = useState(null);
+  const [mapSrc, setMapSrc] = useState("");
   useEffect(() => {
     setBox(document.querySelector(".container-carousel"));
+  }, []);
+
+  useEffect(() => {
+    // Get the user's current location
+    const getUserLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setMapSrc(
+              `https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_API}&q=${latitude},${longitude}`
+            );
+          },
+          (error) => {
+            console.error("Error obtaining location: ", error);
+            setMapSrc(
+              "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d50597.87088943464!2d-59.02624100016744!3d-34.096484500267904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e6!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!5e0!3m2!1sen!2s!4v1649050342672!5m2!1sen!2s"
+            );
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    };
+
+    getUserLocation();
   }, []);
 
   const handlePrev = () => {
@@ -204,8 +231,8 @@ const ViewProperties = () => {
             <div className="border-xl w-full">
               {/* Render iframe with random map by default */}
               <div className="">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d50597.87088943464!2d-59.02624100016744!3d-34.096484500267904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e6!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!5e0!3m2!1sen!2s!4v1649050342672!5m2!1sen!2s"
+              <iframe
+                  src={mapSrc}
                   className="rounded-2xl w-full h-[300px]"
                   style={{ border: 0 }}
                   allowFullScreen=""

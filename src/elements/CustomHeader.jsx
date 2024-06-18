@@ -81,7 +81,7 @@ const CustomHeader = ({ index }) => {
   };
 
   return (
-    <div className="bg-white">
+    <div className="bg-white z-30 relative">
       <div className="relative top-0 left-0 w-full flex justify-between p-4 z-10">
         <Link to="/">
           <img src={logo} alt="error loading " className="w-32 sm:w-fit" />

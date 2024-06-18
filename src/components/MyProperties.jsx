@@ -8,7 +8,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import OpenWithIcon from "@mui/icons-material/OpenWith";
 import API from "../Api";
 
-const API_KEY = "AIzaSyBHFCI2kQqInrHRU67-hyHhIWqH7gusdmI";
 
 const MyProperties = () => {
   const [modal, setModal] = useState(false);
@@ -26,7 +25,7 @@ const MyProperties = () => {
       
       try {
         const response = await API.getUserProperty(user.id);
-        console.log("response ", response);
+        // console.log("response ", response);
         if (response.success) {
           setPropData(response?.data);
         } else {
@@ -42,9 +41,8 @@ const MyProperties = () => {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
-            console.log("Latitude: ", latitude , "Longitude: ", longitude);
             setMapSrc(
-              `https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d50597.87088943464!2d-59.02624100016744!3d-34.096484500267904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e6!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!5e0!3m2!1sen!2s!4v1649050342672!5m2!1sen!2s`
+              `https://www.google.com/maps/embed/v1/view?key=${import.meta.env.VITE_GOOGLE_API}&center=${latitude},${longitude}&zoom=14&maptype=roadmap`
             );
           },
           (error) => {
@@ -60,6 +58,7 @@ const MyProperties = () => {
 
     fetchProperty();
   }, []);
+
 
   const Modal = ({ setModal }) => {
     return (

@@ -137,6 +137,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
                   </div>
                   <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md bg-white">
                     <input
+                      type="number"
                       placeholder="250,458.00"
                       className=" overflow-hidden w-full focus:outline-none "
                       name="price"

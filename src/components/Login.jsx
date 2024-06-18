@@ -51,10 +51,10 @@ const Login = () => {
         localStorage.setItem("token", response.data.token);
         navigate("/my-properties");
       } else {
-        setError(response.message);
+        setError("Wrong Username or Password");
       }
     } catch (err) {
-      console.log(err.response?.data?.message)
+      // console.log(err.response?.data?.message)
       setError(err.response?.data?.message || "Login failed. Please try again.");
     }
   };
