@@ -21,7 +21,7 @@ const EditProfile = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [profileImage, setProfileImage] = useState(profilePlaceholder); // Placeholder for profile image
+  const [profileImage, setProfileImage] = useState(""); // Placeholder for profile image
 
   const [formData, setFormData] = useState({
     id: "",

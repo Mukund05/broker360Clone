@@ -191,9 +191,9 @@ const CustomHeader = ({ index }) => {
             src={
               profile_url
                 ? `${import.meta.env.VITE_BASE_URL}${profile_url}`
-                : profile
+                : `${import.meta.env.VITE_BASE_URL}/dummy.jpg`
             }
-            className="h-8 w-8"
+            className="h-8 w-8 rounded-full"
           />
           {arrowUp ? (
             <KeyboardArrowUpIcon
@@ -215,7 +215,7 @@ const CustomHeader = ({ index }) => {
                     src={
                       profile_url
                         ? `${import.meta.env.VITE_BASE_URL}${profile_url}`
-                        : profile
+                        : `${import.meta.env.VITE_BASE_URL}/dummy.jpg`
                     }
                     className="h-16 w-16 rounded-full object-cover"
                     alt="Profile"
