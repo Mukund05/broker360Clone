@@ -81,7 +81,7 @@ const PropertyDetails = () => {
             <p>Estado actualizado exitosamente</p>
           </div>
         );
-        //Add navigation here if you need 
+        //Add navigation here if you need
       }
     } catch (error) {
       console.log(error);
@@ -101,7 +101,7 @@ const PropertyDetails = () => {
             <p>Estado actualizado exitosamente</p>
           </div>
         );
-        //Add navigation here if you need 
+        //Add navigation here if you need
       }
     } catch (error) {
       console.log(error);
@@ -248,7 +248,7 @@ const PropertyDetails = () => {
         </Link>
         <div className="w-5/6 p-4 sm:p-8 bg-white m-auto my-5 rounded-2xl shadow-2xl flex flex-col md:flex-row  gap-6">
           <div className="flex flex-col gap-6 md:w-3/5">
-            <div className="flex items-center h-[200px]">
+            <div className="flex items-center h-[300px]">
               {images.length > 0 ? (
                 <img
                   src={`${import.meta.env.VITE_BASE_URL}${

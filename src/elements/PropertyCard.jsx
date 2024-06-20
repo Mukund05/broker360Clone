@@ -100,7 +100,7 @@ const PropertyCard = ({ property }) => {
         <div className="flex justify-between items-center">
           <span className="text-[#FF9203] font-bold text-lg md:text-xl">
             {property?.show_price_ad
-              ? `${property?.show_price_ad || "N/A"} MXN`
+              ? `${property?.price || "N/A"} MXN`
               : "Precio no disponible"}
           </span>
           <span className="text-xs md:text-sm text-end font-semibold text-[#6E6E70]">
