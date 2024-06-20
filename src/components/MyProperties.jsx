@@ -42,15 +42,23 @@ const MyProperties = () => {
           (position) => {
             const { latitude, longitude } = position.coords;
             setMapSrc(
-              `https://www.google.com/maps/embed/v1/view?key=${import.meta.env.VITE_GOOGLE_API}&center=${latitude},${longitude}&zoom=14&maptype=roadmap`
+              `https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_API}&q=${latitude},${longitude}`
             );
           },
           (error) => {
             console.error("Error obtaining location: ", error);
+            // Use a default location if the user denies the location request
+            setMapSrc(
+              "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.002621439373!2d-99.137835!3d19.433795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff3623b3f8af%3A0x84c459ce87c50de7!2sPlaza%20de%20la%20Constituci%C3%B3n%2C%20Centro%20Hist%C3%B3rico%2C%20Centro%2C%2006000%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX%2C%20Mexico!5e0!3m2!1sen!2sus!4v1623943590070!5m2!1sen!2sus"
+            );
           }
         );
       } else {
         console.error("Geolocation is not supported by this browser.");
+        // Use a default location if geolocation is not supported
+        setMapSrc(
+          "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.002621439373!2d-99.137835!3d19.433795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff3623b3f8af%3A0x84c459ce87c50de7!2sPlaza%20de%20la%20Constituci%C3%B3n%2C%20Centro%20Hist%C3%B3rico%2C%20Centro%2C%2006000%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX%2C%20Mexico!5e0!3m2!1sen!2sus!4v1623943590070!5m2!1sen!2sus"
+        );
       }
     };
 

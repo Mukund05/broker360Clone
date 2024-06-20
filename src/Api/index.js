@@ -130,7 +130,7 @@ export const updateProfile = async (data, id) => {
     const response = await api.post(`/users/${id}`,data,{
       headers: {
         'Content-Type': 'multipart/form-data'
-      },
+      }
     });
     return response.data;
   } catch (error) {

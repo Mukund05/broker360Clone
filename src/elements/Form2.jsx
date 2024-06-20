@@ -38,6 +38,68 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
     }
   }, []);
 
+  const trimAddress = (address, keyword) => {
+    const parts = address.split(",");
+    const index = parts.findIndex(part => part.trim().toLowerCase() === keyword.toLowerCase());
+    if (index !== -1) {
+      return parts.slice(0, index + 1).join(", ");
+    }
+    return address; // return the full address if the keyword is not found
+  };
+  
+
+  const handleAddLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          const location = `${latitude},${longitude}`;
+          onFormDataChange({ ...propertyData, longitude_latitude: location });
+          setMapSrc(
+            `https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_API}&q=${latitude},${longitude}`
+          );
+
+          // Fetch address using Google Geolocation API
+          try {
+            const response = await fetch(
+              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${import.meta.env.VITE_GOOGLE_API}`
+            );
+            const data = await response.json();
+            console.log(data)
+            if (data.status === "OK") {
+              const address = data.results[0].formatted_address;
+              // Extract components from the address
+              const street = trimAddress(address,data.results[0].address_components.find(
+                (component) => component.types.includes("sublocality_level_1")
+              )?.long_name)
+              const postal_code = data.results[0].address_components.find(
+                (component) => component.types.includes("postal_code")
+              )?.long_name;
+              const corner_with = data.results[0].address_components.find(
+                (component) => component.types.includes("administrative_area_level_1")
+              )?.long_name;
+              onFormDataChange({
+                ...propertyData,
+                street: street || "",
+                postal_code: postal_code || "",
+                corner_with: corner_with || "",
+              });
+            } else {
+              console.error("Geocode API error:", data.status);
+            }
+          } catch (error) {
+            console.error("Error fetching address:", error);
+          }
+        },
+        (error) => {
+          console.error("Error obtaining location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
+
   return (
     <div className="w-full flex flex-col gap-5 shadow-2xl p-5 xs:p-8 sm:p-12 rounded-2xl">
       <span className="text-[#686868] font-bold text-start flex text-xl sm:text-2xl items-center">
@@ -70,13 +132,6 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
               placeholder="Interior"
               className="overflow-hidden w-full"
               name=""
-
-              // onChange={(e) =>
-              //   onFormDataChange({
-              //     ...propertyData,
-              //     corner_with: e.target.value,
-              //   })
-              // }
             />
           </div>
         </div>
@@ -133,6 +188,14 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
             className="rounded-3xl w-full h-60"
           ></iframe>
         </div>
+      </div>
+      <div className="flex justify-center gap-2 items-center flex-col sm:flex-row">
+        <button
+          onClick={handleAddLocation}
+          className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg"
+        >
+          Add Location
+        </button>
       </div>
     </div>
   );

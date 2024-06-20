@@ -10,13 +10,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Api from "../Api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "../Auth/AuthProvider";
 
 const EditProfile = () => {
   const navigate = useNavigate();
   const goBack = () => {
     navigate(-1); // This will take you back to the previous page/component
   };
-
+  const { updateUser } = useAuth();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -140,7 +141,7 @@ const EditProfile = () => {
           progress: undefined,
           theme: "light",
         });
-
+        updateUser(response?.data)
         navigate("/Edit-profile");
       }
     } catch (error) {
