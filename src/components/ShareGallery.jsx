@@ -24,10 +24,17 @@ const ShareGallery = () => {
   const handleFileUpload = (event) => {
     const files = Array.from(event.target.files);
     setUploadedImages((prevImages) => [...prevImages, ...files]);
+    fileInputRef.current.value = null; // Clear the file input value
   };
 
   const handleRemoveImage = (index) => {
     setUploadedImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    // Adjust main image index if needed
+    if (mainImageIndex === index) {
+      setMainImageIndex(0);
+    } else if (mainImageIndex > index) {
+      setMainImageIndex((prevIndex) => prevIndex - 1);
+    }
   };
 
   const handleSetMainImage = (index) => {
@@ -35,19 +42,17 @@ const ShareGallery = () => {
   };
 
   const handlePost = async () => {
-    // const data = {};
-    const arr=[]
+    // Convert images to the required format for the API
+    const arr = [];
     uploadedImages.forEach((image) => {
-      arr.push(image)
+      arr.push(image);
     });
-    // data.append("property_id", propertId);
-    // data.append("property_image", arr);
 
     const data = {
-      'property_id' : propertId,
-      'property_image' :arr
-    }
-    
+      property_id: propertId,
+      property_image: arr,
+    };
+
     try {
       const response = await Api.sendGallery(data);
       console.log("images response", response);

@@ -73,7 +73,7 @@ const AddPropertyData = () => {
 if (!propertyData.type) newErrors.type = "Type is required.";
 if (!propertyData.ad_type) newErrors.ad_type = "Ad type is required.";
 if (!propertyData.ad_desc) newErrors.ad_desc = "Description is required.";
-if (!propertyData.price) newErrors.price = "Price is required.";
+// if (propertyData.operation_type==='rent' && !propertyData.price) newErrors.price = "Price is required.";
 if (!propertyData.currency) newErrors.currency = "Currency is required.";
 if (!propertyData.bedroom) newErrors.bedroom = "Bedrooms are required.";
 if (!propertyData.bathrooms) newErrors.bathrooms = "Bathrooms are required.";

@@ -188,7 +188,11 @@ const CustomHeader = ({ index }) => {
 
         <div className="flex items-center relative">
           <img
-            src={`${import.meta.env.VITE_BASE_URL}${profile_url || profile}`}
+            src={
+              profile_url
+                ? `${import.meta.env.VITE_BASE_URL}${profile_url}`
+                : profile
+            }
             className="h-8 w-8"
           />
           {arrowUp ? (
@@ -208,9 +212,11 @@ const CustomHeader = ({ index }) => {
               <div className="h-28 bg-gradient-to-b from-[#011B4E] to-[#023EB4] flex flex-row items-center rounded-t-2xl gap-x-4 px-3 sm:px-6">
                 <div className="h-fit rounded-full bg-[#FF9203] flex items-center justify-center p-1">
                   <img
-                    src={`${import.meta.env.VITE_BASE_URL}${
-                      profile_url || profile
-                    }`}
+                    src={
+                      profile_url
+                        ? `${import.meta.env.VITE_BASE_URL}${profile_url}`
+                        : profile
+                    }
                     className="h-16 w-16 rounded-full object-cover"
                     alt="Profile"
                   />
