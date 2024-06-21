@@ -22,6 +22,7 @@ const EditProfile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [profileImage, setProfileImage] = useState(""); // Placeholder for profile image
+  const [pickedProfileImage, setPickedProfileImage] = useState(""); // Placeholder for profile image
 
   const [formData, setFormData] = useState({
     id: "",
@@ -87,7 +88,7 @@ const EditProfile = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfileImage(reader.result);
+        setPickedProfileImage(reader.result);
         setFormData((prev) => ({ ...prev, profile_url: file }));
       };
       reader.readAsDataURL(file);
@@ -141,7 +142,7 @@ const EditProfile = () => {
           progress: undefined,
           theme: "light",
         });
-        updateUser(response?.data)
+        updateUser(response?.data);
         navigate("/Edit-profile");
       }
     } catch (error) {
@@ -191,13 +192,21 @@ const EditProfile = () => {
             </span>
             <div className="relative">
               <label htmlFor="profileImageInput" className="cursor-pointer">
-                <img
-                  src={`${import.meta.env.VITE_BASE_URL}${
-                    profileImage || "dummy.jpg"
-                  }`}
-                  alt="Profile"
-                  className="h-20 w-20 rounded-full object-cover"
-                />
+                {pickedProfileImage ? (
+                  <img
+                    src={`${pickedProfileImage || "dummy.jpg"}`}
+                    alt="Profile"
+                    className="h-20 w-20 rounded-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src={`${import.meta.env.VITE_BASE_URL}${
+                      profileImage || "dummy.jpg"
+                    }`}
+                    alt="Profile"
+                    className="h-20 w-20 rounded-full object-cover"
+                  />
+                )}
                 <img
                   src={camera}
                   alt="Camera"
