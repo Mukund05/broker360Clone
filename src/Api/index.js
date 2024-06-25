@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const BASE_URL = "https://360backend.redcrix.com/api/";
+const BASE_URL = "http://easybroker.devprosolutions.in/api/";
 
 // Create an Axios instance
 const api = axios.create({
@@ -214,6 +214,33 @@ export const getGallery = async (id) => {
   }
 }
 
+export const getUserTask = async (id) => {
+  try {
+    const response = await api.get(`/tasks/user/${id}`);
+    return response.data;
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+export const getTask = async (id) => {
+  try {
+    const response = await api.get(`/tasks/${id}`);
+    return response.data;
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+export const sendTask = async (data) => {
+  try {
+    const response = await api.post(`/tasks`,data);
+    return response.data;
+  } catch (error) {
+    handleError(error)
+  }
+}
+
 // Logout
 export const logout = () => {
   localStorage.removeItem("token");
@@ -243,5 +270,8 @@ export default {
   getGallery,
   getUserProperty,
   updateProperty,
-  updatePropertyStatus
+  updatePropertyStatus,
+  getUserTask,
+  getTask,
+  sendTask
 };

@@ -32,6 +32,7 @@ import ContactList from "./components/ContactList";
 import UpdateContact from "./components/UpdateContact";
 import AuthProvider from "./Auth/AuthProvider";
 import ProtectedRoute from "./ProtectedRoutes";
+import Tasks from "./components/Tasks";
 
 function App() {
   return (
@@ -70,6 +71,7 @@ function App() {
               <Route path="/agencies" Component={Agencies} />
               <Route path="/message-gateway" Component={MessageGateway} />
               <Route path="/change-plan/cancel-subscription" Component={CancelSubscription} />
+              <Route path="/tasks" Component={Tasks} />
             </Route>
           </Routes>
         </AuthProvider>

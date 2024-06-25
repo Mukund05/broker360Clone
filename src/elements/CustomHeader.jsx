@@ -46,6 +46,8 @@ const CustomHeader = ({ index }) => {
       navigate("/message-gateway");
     } else if (itemName === 0) {
       navigate("/my-properties");
+    } else if (itemName === 4 ) {
+      navigate("/tasks")
     }
   };
 
@@ -183,6 +185,16 @@ const CustomHeader = ({ index }) => {
             }}
           >
             Buzón de mensajes
+          </li>
+          <li
+            className={`cursor-pointer pb-2 ${
+              activeItem === 4 ? "border-b-[#FF9203] border-b-2" : ""
+            } text-sm md:text-[14px]`}
+            onClick={() => {
+              handleItemClick(4);
+            }}
+          >
+            Tareas
           </li>
         </ul>
 
@@ -398,6 +410,16 @@ const CustomHeader = ({ index }) => {
           }}
         >
           Buzón de mensajes
+        </li>
+        <li
+          className={`cursor-pointer pb-2 ${
+            activeItem === 4 ? "border-b-[#FF9203] border-b-2" : ""
+          }`}
+          onClick={() => {
+            handleItemClick(4);
+          }}
+        >
+          Tareas
         </li>
       </ul>
       {showModal && <Modal />}
