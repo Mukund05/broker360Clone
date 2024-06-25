@@ -55,7 +55,7 @@ export const login = async (data) => {
 // Register
 export const register = async (data) => {
   try {
-    const response = await api.post("/users", data);
+    const response = await api.post("/register", data);
     return response.data;
   } catch (error) {
     handleError(error);
@@ -127,7 +127,11 @@ export const getProfile = async () => {
 
 export const updateProfile = async (data, id) => {
   try {
-    const response = await api.put(`/users/${id}`, data);
+    const response = await api.post(`/users/${id}`,data,{
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
     return response.data;
   } catch (error) {
     handleError(error);
@@ -176,6 +180,15 @@ export const updateProperty = async (id,data) => {
     return response.data;
   } catch (error) {
     handleError(error);
+  }
+}
+
+export const updatePropertyStatus = async (id,data) => {
+  try {
+    const response = await api.put(`/properties/${id}/status`,data)
+    return response.data;
+  } catch (error) {
+    handleError(error)
   }
 }
 
@@ -229,5 +242,6 @@ export default {
   sendGallery,
   getGallery,
   getUserProperty,
-  updateProperty
+  updateProperty,
+  updatePropertyStatus
 };

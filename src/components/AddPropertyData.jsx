@@ -43,6 +43,7 @@ const AddPropertyData = () => {
     share_commission: 0,
     commission_percent: 0,
     condition_sharing: "",
+    longitude_latitude:""
   });
 
   const [errors, setErrors] = useState({});
@@ -72,7 +73,7 @@ const AddPropertyData = () => {
 if (!propertyData.type) newErrors.type = "Type is required.";
 if (!propertyData.ad_type) newErrors.ad_type = "Ad type is required.";
 if (!propertyData.ad_desc) newErrors.ad_desc = "Description is required.";
-if (!propertyData.price) newErrors.price = "Price is required.";
+// if (propertyData.operation_type==='rent' && !propertyData.price) newErrors.price = "Price is required.";
 if (!propertyData.currency) newErrors.currency = "Currency is required.";
 if (!propertyData.bedroom) newErrors.bedroom = "Bedrooms are required.";
 if (!propertyData.bathrooms) newErrors.bathrooms = "Bathrooms are required.";
@@ -121,18 +122,19 @@ if (!propertyData.key_code) newErrors.key_code = "Key code is required.";
       const user = await Api.getProfile();
       const updatedPropertyData = {
         ...propertyData,
-        user_id: user.id,
+        user_id: user?.data?.id,
       };
-
+      
+      
       let response;
       if (isUpdate) {
         response = await Api.updateProperty(data.id, updatedPropertyData);
       } else {
         response = await Api.sendProperty(updatedPropertyData);
       }
-
-      console.log("Property Submitted: ", response);
+      
       navigate("/my-properties");
+      console.log("Property Submitted: ", response);
     } catch (error) {
       console.error("Failed to submit property: ", error);
     }

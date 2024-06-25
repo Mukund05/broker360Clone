@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CustomHeader from "../elements/CustomHeader";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-
 import PropertyCard from "../elements/PropertyCard";
 import Footer from "../elements/Footer";
 import Api from "../Api";
@@ -9,6 +8,7 @@ import Api from "../Api";
 const Properties = () => {
   const [propData, setPropData] = useState([]);
   const [error, setError] = useState("");
+  const [mapSrc, setMapSrc] = useState("");
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -28,39 +28,69 @@ const Properties = () => {
     fetchProperty();
   }, []);
 
+  useEffect(() => {
+    // Get the user's current location
+    const getUserLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setMapSrc(
+              `https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_API}&q=${latitude},${longitude}`
+            );
+          },
+          (error) => {
+            console.error("Error obtaining location: ", error);
+            // Use a default location if the user denies the location request
+            setMapSrc(
+              "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.002621439373!2d-99.137835!3d19.433795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff3623b3f8af%3A0x84c459ce87c50de7!2sPlaza%20de%20la%20Constituci%C3%B3n%2C%20Centro%20Hist%C3%B3rico%2C%20Centro%2C%2006000%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX%2C%20Mexico!5e0!3m2!1sen!2sus!4v1623943590070!5m2!1sen!2sus"
+            );
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+        // Use a default location if geolocation is not supported
+        setMapSrc(
+          "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.002621439373!2d-99.137835!3d19.433795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff3623b3f8af%3A0x84c459ce87c50de7!2sPlaza%20de%20la%20Constituci%C3%B3n%2C%20Centro%20Hist%C3%B3rico%2C%20Centro%2C%2006000%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX%2C%20Mexico!5e0!3m2!1sen!2sus!4v1623943590070!5m2!1sen!2sus"
+        );
+      }
+    };
+
+    getUserLocation();
+  }, []);
+
   return (
     <div className="bg-[#eff6ff]">
       <CustomHeader index={1} />
-      <div className=" py-4">
+      <div className="py-4">
         <div className="flex gap-1 flex-col">
           <div className="flex justify-between md:w-1/2 pr-10"></div>
           <div className="flex flex-col md:flex-row gap-x-4 my-6 gap-y-8">
             <div className="w-[90%] md:w-1/2 border-xl flex justify-between mx-auto">
-              {/* Render iframe with random map by default */}
-              <div className="overflow-hidden flex  justify-end w-full">
+              <div className="overflow-hidden flex justify-end w-full">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d50597.87088943464!2d-59.02624100016744!3d-34.096484500267904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e6!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!4m5!1s0x95bb0bd1a2b1c4af%3A0x4bb90e05802045e8!2sAv.%20Rivadavia%20942%2C%20B2800%20Z%C3%A1rate%2C%20Provincia%20de%20Buenos%20Aires%2C%20Argentina!3m2!1d-34.096472199999996!2d-59.0268982!5e0!3m2!1sen!2s!4v1649050342672!5m2!1sen!2s"
+                  src={mapSrc}
                   style={{ border: 0 }}
                   loading="lazy"
-                  className="rounded-3xl  md:rounded-s-none  w-full h-[400px] md:h-[500px] overflow-hidden"
+                  className="rounded-3xl md:rounded-s-none w-full h-[400px] md:h-[500px] overflow-hidden"
                 ></iframe>
               </div>
             </div>
             <div className="md:w-3/4 flex flex-col gap-y-2 gap-x-4 pe-8 px-4">
-              <div className="flex flex-wrap gap-y-4 justify-start text-[#6E6E70] gap-x-2 sm:gap-x-4 ">
-                <div className="border border-[#6E6E70] rounded-lg p-2 bg-white relative w-fit text-xs sm:text-sm flex justify-between flex-col xs:flex-row px-5 cursor-pointer hover:bg-[#011b4e]  hover:text-white">
+              <div className="flex flex-wrap gap-y-4 justify-start text-[#6E6E70] gap-x-2 sm:gap-x-4">
+                <div className="border border-[#6E6E70] rounded-lg p-2 bg-white relative w-fit text-xs sm:text-sm flex justify-between flex-col xs:flex-row px-5 cursor-pointer hover:bg-[#011b4e] hover:text-white">
                   <span>Ubicación</span>
                 </div>
-                <div className="border border-[#6E6E70] rounded-lg p-2 bg-white relative w-fit text-xs sm:text-sm flex justify-between flex-col xs:flex-row px-5 cursor-pointer hover:bg-[#011b4e]  hover:text-white">
+                <div className="border border-[#6E6E70] rounded-lg p-2 bg-white relative w-fit text-xs sm:text-sm flex justify-between flex-col xs:flex-row px-5 cursor-pointer hover:bg-[#011b4e] hover:text-white">
                   Operación
                 </div>
-                <div className="border border-[#6E6E70] rounded-lg p-2 bg-white relative w-fit cursor-pointer text-xs sm:text-sm  flex justify-between flex-col xs:flex-row px-5 hover:bg-[#011b4e]  hover:text-white">
+                <div className="border border-[#6E6E70] rounded-lg p-2 bg-white relative w-fit cursor-pointer text-xs sm:text-sm flex justify-between flex-col xs:flex-row px-5 hover:bg-[#011b4e] hover:text-white">
                   Precio
                 </div>
-                <div className="border border-[#6E6E70] rounded-lg p-2 bg-white relative w-fit cursor-pointer text-xs sm:text-sm  flex justify-between flex-col xs:flex-row px-5 hover:bg-[#011b4e]  hover:text-white">
+                <div className="border border-[#6E6E70] rounded-lg p-2 bg-white relative w-fit cursor-pointer text-xs sm:text-sm flex justify-between flex-col xs:flex-row px-5 hover:bg-[#011b4e] hover:text-white">
                   Tipo de propiedad
                 </div>
-                <div className="border border-[#6E6E70] rounded-lg p-2 bg-white relative w-fit cursor-pointer text-xs sm:text-sm  flex justify-between flex-col xs:flex-row px-5 hover:bg-[#011b4e]  hover:text-white">
+                <div className="border border-[#6E6E70] rounded-lg p-2 bg-white relative w-fit cursor-pointer text-xs sm:text-sm flex justify-between flex-col xs:flex-row px-5 hover:bg-[#011b4e] hover:text-white">
                   Ordenar
                 </div>
               </div>

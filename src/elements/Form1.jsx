@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import line from "../assets/line.png";
 
@@ -7,6 +7,17 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
   const [activeElem, setActiveElem] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
   const [openCurrency, setOpenCurrency] = useState(false);
+  console.log(propertyData)
+
+  useEffect (() => {
+    if (propertyData.operation_type) {
+      setIsChecked(propertyData.operation_type === "Venta");
+    }
+  }, [propertyData.operation_type]);
+
+  const handleOperationTypeChange = (operation_type) => {
+    onFormDataChange({ ...propertyData, operation_type: operation_type });
+  };
 
   const handleCurrencyChange = (val) => {
     onFormDataChange({ ...propertyData, currency: val });
@@ -106,172 +117,95 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
           <span className="text-red-600 ">*</span>
         </div>
         <div className="p-2  flex justify-start flex-wrap sm:justify-center w-full sm:w-2/3 sm:flex-col gap-2">
-          <div className="flex gap-x-2 ">
-            <input
-              type="checkbox"
-              style={{
-                appearance: "none",
-                width: "1.5rem",
-                height: "1.5rem",
-                position: "relative",
-                cursor: "pointer",
-              }}
-              className="custom-checkbox "
-              checked={isChecked} // Step 3: Bind state to checked attribute
-              onChange={handleCheckboxChange}
-            />
-            <span className="font-semibold text-start text-[#686868]">
-              Venta
-            </span>
-          </div>
-          {isChecked && <div className="sm:h-32 h-[28rem]"></div>}
-          {isChecked && (
-            <div className="bg-[#fffaea] w-full flex justify-center p-6 absolute left-0 mt-12 sm:mt-0">
-              <div className="flex flex-col gap-4">
-                <div className="flex  justify-center gap-2 items-center flex-col sm:flex-row w-full">
-                  <div className="w-full sm:w-1/3 flex sm:justify-end">
-                    <span className="text-[#686868] text-sm sm:text-md font-bold">
-                      Precio de venta*
-                    </span>
-                    <span className="text-red-600">*</span>
-                  </div>
-                  <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md bg-white">
-                    <input
-                      placeholder="250,458.00"
-                      className=" overflow-hidden w-full focus:outline-none "
-                      name="price"
-                      value={propertyData.price}
-                      onChange={(e) =>
-                        onFormDataChange({
-                          ...propertyData,
-                          price: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="relative p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md bg-white">
-                    <div
-                      className="flex justify-between cursor-pointer w-full "
-                      onClick={() => setOpenCurrency(!openCurrency)}
-                    >
-                      <div className=" overflow-hidden w-full focus:outline-none flex justify-start">
-                        {propertyData.currency}
-                      </div>
-
-                      <KeyboardArrowDownIcon className="" />
-                      {openCurrency && (
-                        <div className="absolute top-10 w-full left-0 flex flex-col bg-white p-2">
-                          {[
-                            "USD",
-                            "MXN",
-                            "ARS",
-                            "BRL",
-                            "CLP",
-                            "COP",
-                            "CRC",
-                            "DOP",
-                            "EGP",
-                            "EUR",
-                            "GTQ",
-                            "PEN",
-                          ].map((currency) => (
-                            <span
-                              key={currency}
-                              className="w-full text-sm text-[#6E6E70] font-semibold text-start cursor-pointer hover:bg-[#002f6d] hover:text-white p-2 rounded-md"
-                              onClick={() => handleCurrencyChange(currency)}
-                            >
-                              {currency}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                {/* <div className="flex  justify-center gap-2 items-center flex-col sm:flex-row w-full">
-                  <div className=" flex sm:justify-end">
-                    <span className="text-[#686868] text-sm sm:text-md font-bold">
-                      Precio basado en
-                    </span>
-                  </div>
-                  <div className="px-4 py-2 sm:w-3/4 flex justify-center w-full  gap-2 border rounded-md border-[#D9D9D9]">
-                    <div
-                      className={`font-bold ${
-                        activeElem === 0 && "text-white bg-[#011B4E]"
-                      }  rounded-md w-1/2  p-2 text-[#011B4E] cursor-pointer`}
-                      onClick={() => setActiveElem(0)}
-                    >
-                      Valor total
-                    </div>
-                    <div
-                      className={`font-bold ${
-                        activeElem === 1 && "text-white bg-[#011B4E]"
-                      }  rounded-md w-1/2  p-2 text-[#011B4E] cursor-pointer`}
-                      onClick={() => setActiveElem(1)}
-                    >
-                      Valor total
-                    </div>
-                  </div>
-                </div>
-                <div className="flex  justify-center gap-2 items-center flex-col sm:flex-row ">
-                  <div className=" flex sm:justify-end w-full sm:w-1/12 ">
-                    <span className="text-[#686868] text-sm sm:text-md font-bold md:text-nowrap">
-                      Tipo de propiedad
-                    </span>
-                    <span className="text-red-600">*</span>
-                  </div>
-                  <div className="bg-white p-2 sm:w-1/3 px-4 flex justify-between w-full  border border-[#8692A6] rounded-md">
-                    <input
-                      placeholder="% del precio total"
-                      className=" overflow-hidden w-full  focus:outline-none"
-                    />
-                    <KeyboardArrowDownIcon className="text-[#686868]" />
-                  </div>
-                  <div className="bg-white p-2 px-4  flex justify-between w-full sm:w-1/3 border border-[#8692A6] rounded-md">
-                    <input
-                      placeholder="% del precio total"
-                      className=" overflow-hidden w-full  focus:outline-none"
-                    />
-                    <KeyboardArrowDownIcon className="text-[#686868]" />
-                  </div>
-                </div> */}
-              </div>
+          {["Venta", "Renta", "Renta temporal"].map((operationType, index) => (
+            <div key={index} className={`flex gap-x-2 `}>
+              <input
+                type="radio"
+                name="operationtype"
+                style={{
+                  appearance: "none",
+                  width: "1.5rem",
+                  height: "1.5rem",
+                  position: "relative",
+                  cursor: "pointer",
+                }}
+                className="custom-checkbox "
+                checked={propertyData.operation_type === operationType}
+                onChange={() => handleOperationTypeChange(operationType)}
+              />
+              <span className="font-semibold text-start text-[#686868]">
+                {operationType}
+              </span>
             </div>
-          )}
-          <div className={`flex gap-x-2 `}>
-            <input
-              type="checkbox"
-              style={{
-                appearance: "none",
-                width: "1.5rem",
-                height: "1.5rem",
-                position: "relative",
-                cursor: "pointer",
-              }}
-              className="custom-checkbox "
-            />
-            <span className="font-semibold text-start text-[#686868]">
-              Renta
-            </span>
-          </div>
-          <div className={`flex gap-x-2 `}>
-            <input
-              type="checkbox"
-              style={{
-                appearance: "none",
-                width: "1.5rem",
-                height: "1.5rem",
-                position: "relative",
-                cursor: "pointer",
-              }}
-              className="custom-checkbox "
-            />
-            <span className="font-semibold text-start text-[#686868]">
-              Renta temporal
-            </span>
-          </div>
+          ))}
         </div>
       </div>
+      {propertyData.operation_type === "Venta" && (
+        <div className="bg-[#fffaea] w-full flex justify-center p-6">
+          <div className="flex flex-col gap-4">
+            <div className="flex justify-center gap-2 items-center flex-col sm:flex-row w-full">
+              <div className="w-full sm:w-1/3 flex sm:justify-end">
+                <span className="text-[#686868] text-sm sm:text-md font-bold">
+                  Precio de venta*
+                </span>
+                <span className="text-red-600">*</span>
+              </div>
+              <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md bg-white">
+                <input
+                  type="number"
+                  placeholder="250,458.00"
+                  className="overflow-hidden w-full focus:outline-none"
+                  name="price"
+                  value={propertyData.price}
+                  onChange={(e) =>
+                    onFormDataChange({
+                      ...propertyData,
+                      price: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="relative p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md bg-white">
+                <div
+                  className="flex justify-between cursor-pointer w-full"
+                  onClick={() => setOpenCurrency(!openCurrency)}
+                >
+                  <div className="overflow-hidden w-full focus:outline-none flex justify-start">
+                    {propertyData.currency}
+                  </div>
+                  <KeyboardArrowDownIcon className="" />
+                  {openCurrency && (
+                    <div className="absolute top-10 w-full left-0 flex flex-col bg-white p-2">
+                      {[
+                        "USD",
+                        "MXN",
+                        "ARS",
+                        "BRL",
+                        "CLP",
+                        "COP",
+                        "CRC",
+                        "DOP",
+                        "EGP",
+                        "EUR",
+                        "GTQ",
+                        "PEN",
+                      ].map((currency) => (
+                        <span
+                          key={currency}
+                          className="w-full text-sm text-[#6E6E70] font-semibold text-start cursor-pointer hover:bg-[#002f6d] hover:text-white p-2 rounded-md"
+                          onClick={() => handleCurrencyChange(currency)}
+                        >
+                          {currency}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex  justify-center gap-2 items-center flex-col sm:flex-row ">
         <div className="w-full sm:w-1/3 flex sm:justify-end">
           <span className="text-[#686868] text-sm sm:text-md font-bold">

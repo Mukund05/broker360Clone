@@ -54,12 +54,12 @@ const AuthProvider = ({ children }) => {
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
 
-        navigate("/dashboard"); // Redirect to dashboard after login - update the path if needed
+        navigate("/my-properties"); // Redirect to dashboard after login - update the path if needed
         return { success: true };
       }
       throw new Error(res.message);
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       return { success: false, message: err.message };
     }
   };
@@ -73,8 +73,13 @@ const AuthProvider = ({ children }) => {
     navigate("/login");
   };
 
+  const updateUser = (updatedUser) => {
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+  };
+
   return (
-    <AuthContext.Provider value={{ token, user, loginAction, logOut, isAuthenticated, loading }}>
+    <AuthContext.Provider value={{ token, user, loginAction, logOut, isAuthenticated, loading, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

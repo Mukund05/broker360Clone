@@ -30,16 +30,39 @@ const Register = () => {
   const toggleCPasswordVisibility = () => {
     setCShowPassword(!showCPassword);
   };
+
   const goBack = () => {
     navigate(-1); // This will take you back to the previous page/component
   };
 
-  //handle register
+  // Validate email format
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Handle register
   const handleRegister = async () => {
+    // Check for empty fields
+    if (!formData.email || !formData.name || !formData.phone || !formData.password || !formData.confirmPassword) {
+      setError("All fields are required");
+      return;
+    }
+
+    // Validate email format
+    if (!isValidEmail(formData.email)) {
+      setError("Please enter a valid email");
+      return;
+    }
+
+    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return;
     }
+
+    // Clear previous errors
+    setError("");
 
     try {
       const response = await api.register({
@@ -48,21 +71,21 @@ const Register = () => {
         number: formData.phone,
         password: formData.password,
       });
-      console.log("message ", response);
-      if (response.success) navigate("/login");
-      else setError(response.message);
+      console.log(response);
+      if (response.success) {
+        navigate("/login");
+      } else {
+        setError(response.message);
+      }
     } catch (err) {
-      console.log("error ", err.response?.data?.message);
-      setError(
-        err.response?.data?.message || "Registration failed. Please try again."
-      );
+      setError(err.response?.data?.message || "Registration failed. Please try again.");
     }
   };
 
   return (
     <div className="">
       <Header />
-      <div className="bg-[#eff6ff]  ">
+      <div className="bg-[#eff6ff]">
         <Link
           onClick={goBack}
           className="inline-flex justify-start text-[#011B4E] p-4 sm:p-8 gap-3"
@@ -71,7 +94,7 @@ const Register = () => {
           Atrás
         </Link>
 
-        <div className="w-4/5  m-auto flex sm:px-0 md:px-16 md:inline-flex flex-col  items-center text-center gap-y-4 justify-between">
+        <div className="w-4/5 m-auto flex sm:px-0 md:px-16 md:inline-flex flex-col items-center text-center gap-y-4 justify-between">
           <span className="text-[#454545] text-xl sm:text-2xl font-semibold">
             Ingresa los datos para que puedas crear tu perfil y publicar
           </span>
@@ -85,6 +108,7 @@ const Register = () => {
               onChange={handleChange}
               placeholder="Escribe tu email"
               className="rounded-md border text-black border-black p-2 sm:p-4 bg-[#eff6ff]"
+              required
             />
             <label className="text-[#686868] flex justify-start font-bold">
               Nombre y apellido
@@ -93,8 +117,9 @@ const Register = () => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Escribe tu emnombre aquí"
+              placeholder="Escribe tu nombre aquí"
               className="rounded-md border text-black border-black p-2 sm:p-4 bg-[#eff6ff]"
+              required
             />
             <label className="text-[#686868] flex justify-start font-bold">
               Teléfono
@@ -105,6 +130,7 @@ const Register = () => {
               onChange={handleChange}
               placeholder="Escribe tu teléfono aquí"
               className="rounded-md border text-black border-black p-2 sm:p-4 bg-[#eff6ff]"
+              required
             />
             <label className="text-[#686868] flex justify-start font-bold">
               Contraseña
@@ -121,6 +147,7 @@ const Register = () => {
                   disableUnderline: true,
                   placeholder: "Escribe tu contraseña",
                 }}
+                required
               />
               <IconButton onClick={togglePasswordVisibility}>
                 {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -141,6 +168,7 @@ const Register = () => {
                   disableUnderline: true,
                   placeholder: "Repite tu contraseña",
                 }}
+                required
               />
               <IconButton onClick={toggleCPasswordVisibility}>
                 {showCPassword ? <VisibilityOff /> : <Visibility />}
@@ -149,7 +177,7 @@ const Register = () => {
             {error && <p className="text-red-500">{error}</p>}
           </div>
           <button
-            className="bg-[#011B4E]  text-white font-semibold py-4 px-6 sm:px-12 rounded-3xl text-md sm:text-lg w-4/5 sm:w-1/2 lg:w-2/5 "
+            className="bg-[#011B4E] text-white font-semibold py-4 px-6 sm:px-12 rounded-3xl text-md sm:text-lg w-4/5 sm:w-1/2 lg:w-2/5"
             onClick={handleRegister}
           >
             Regístrate

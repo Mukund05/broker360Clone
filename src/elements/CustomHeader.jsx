@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../assets/logo.net.png";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -10,6 +10,7 @@ import play from "../assets/play.png";
 import question from "../assets/question.png";
 import info from "../assets/info.png";
 import { useAuth } from "../Auth/AuthProvider";
+import Api from "../Api";
 
 const CustomHeader = ({ index }) => {
   const navigate = useNavigate();
@@ -20,6 +21,9 @@ const CustomHeader = ({ index }) => {
   const [arrowUp, setArrowUp] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const { logOut } = useAuth();
+  const { profile_url, name } = JSON.parse(
+    localStorage.getItem("user") || null
+  );
 
   const setIndex = (index) => {
     if (index == 0) navigate("/view-properties");
@@ -81,7 +85,7 @@ const CustomHeader = ({ index }) => {
   };
 
   return (
-    <div className="bg-white">
+    <div className="bg-white z-30 relative">
       <div className="relative top-0 left-0 w-full flex justify-between p-4 z-10">
         <Link to="/">
           <img src={logo} alt="error loading " className="w-32 sm:w-fit" />
@@ -183,7 +187,14 @@ const CustomHeader = ({ index }) => {
         </ul>
 
         <div className="flex items-center relative">
-          <img src={profile} className="h-8 w-8" />
+          <img
+            src={
+              profile_url
+                ? `${import.meta.env.VITE_BASE_URL}${profile_url}`
+                : `${import.meta.env.VITE_BASE_URL}/dummy.jpg`
+            }
+            className="h-8 w-8 rounded-full"
+          />
           {arrowUp ? (
             <KeyboardArrowUpIcon
               className="text-gray-500 ml-3 cursor-pointer"
@@ -198,14 +209,20 @@ const CustomHeader = ({ index }) => {
 
           {arrowUp ? (
             <div className="absolute bg-white  top-16 right-4 border w-60 sm:w-80   z-50 rounded-2xl">
-              <div className="h-28 bg-gradient-to-b from-[#011B4E] to-[#023EB4] flex flex-row items-center rounded-t-2xl gap-x-4  px-3 sm:px-6">
-                <div className="h-fit rounded-full bg-[#FF9203] flex items-center justify-center p-3 font-semibold text-white">
-                  LM
+              <div className="h-28 bg-gradient-to-b from-[#011B4E] to-[#023EB4] flex flex-row items-center rounded-t-2xl gap-x-4 px-3 sm:px-6">
+                <div className="h-fit rounded-full bg-[#FF9203] flex items-center justify-center p-1">
+                  <img
+                    src={
+                      profile_url
+                        ? `${import.meta.env.VITE_BASE_URL}${profile_url}`
+                        : `${import.meta.env.VITE_BASE_URL}/dummy.jpg`
+                    }
+                    className="h-16 w-16 rounded-full object-cover"
+                    alt="Profile"
+                  />
                 </div>
                 <div className="flex flex-col font-semibold">
-                  <div className="text-white cursor-pointer">
-                    Inmobiliaria Egypt-House
-                  </div>
+                  <div className="text-white cursor-pointer">{name}</div>
                   <div
                     className="text-[#35CEFF] cursor-pointer"
                     onClick={() => navigate("/Edit-profile")}
@@ -214,6 +231,7 @@ const CustomHeader = ({ index }) => {
                   </div>
                 </div>
               </div>
+
               <ul className="flex flex-col gap-y-3 text-start text-md sm:text-lg p-4">
                 <li className="flex gap-x-2 items-center ">
                   <img src={edit} className="h-4 w-4" />{" "}

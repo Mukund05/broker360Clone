@@ -28,16 +28,37 @@ const Login = () => {
     navigate(-1); // This will take you back to the previous page/component
   };
 
-  // Handle login
+  // Validate email format
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+
   const handleLogin = async () => {
+    if (!email || !password) {
+      setError("Email and password are required.");
+      return;
+    }
+    if (!isValidEmail(email)) {
+      setError("Please enter a valid email.");
+      return;
+    }
     setError(""); // Clear previous errors
-    const response = await loginAction({ email, password });
-    if (response.success) {
-      navigate("/my-properties");
-    } else {
-      setError(response.message);
+    try {
+      const response = await loginAction({ email, password });
+      if (response.success) {
+        localStorage.setItem("token", response.data.token);
+        navigate("/my-properties");
+      } else {
+        setError("Wrong Username or Password");
+      }
+    } catch (err) {
+      // console.log(err.response?.data?.message)
+      setError(err.response?.data?.message || "Login failed. Please try again.");
     }
   };
+
 
   return (
     <div>
