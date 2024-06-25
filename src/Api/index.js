@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const BASE_URL = "http://easybroker.devprosolutions.in/api";
+const BASE_URL = "https://360backend.redcrix.com/api/";
 
 // Create an Axios instance
 const api = axios.create({
