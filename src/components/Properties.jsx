@@ -4,16 +4,20 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PropertyCard from "../elements/PropertyCard";
 import Footer from "../elements/Footer";
 import Api from "../Api";
+import { useLocation } from "react-router-dom";
 
 const Properties = () => {
+  const location = useLocation();
   const [propData, setPropData] = useState([]);
   const [error, setError] = useState("");
   const [mapSrc, setMapSrc] = useState("");
 
   useEffect(() => {
     const fetchProperty = async () => {
+      const searchParams = new URLSearchParams(location.search);
+      const searchQuery = searchParams.get("search");
       try {
-        const response = await Api.getProperties();
+        const response = await Api.getProperties(searchQuery);
         console.log("response ", response);
         if (response.success) {
           setPropData(response?.data);
@@ -26,7 +30,7 @@ const Properties = () => {
     };
 
     fetchProperty();
-  }, []);
+  }, [location.search]);
 
   useEffect(() => {
     // Get the user's current location

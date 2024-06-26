@@ -127,10 +127,10 @@ export const getProfile = async () => {
 
 export const updateProfile = async (data, id) => {
   try {
-    const response = await api.post(`/users/${id}`,data,{
+    const response = await api.post(`/users/${id}`, data, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        "Content-Type": "multipart/form-data",
+      },
     });
     return response.data;
   } catch (error) {
@@ -145,11 +145,15 @@ export const sendProperty = async (data) => {
   } catch (error) {
     handleError(error);
   }
-}
+};
 
-export const getProperties = async () => {
+export const getProperties = async (searchQuery) => {
   try {
-    const response = await api.get("/properties");
+    const response = await api.get("/properties", {
+      params: {
+        s: searchQuery,
+      },
+    });
     return response.data;
   } catch (error) {
     handleError(error);
@@ -158,88 +162,88 @@ export const getProperties = async () => {
 
 export const getCurrentProperty = async (id) => {
   try {
-    const response = await api.get(`/properties/${id}`)
+    const response = await api.get(`/properties/${id}`);
     return response.data;
-  }catch (error){
+  } catch (error) {
     handleError(error);
   }
-}
+};
 
 export const getUserProperty = async (id) => {
   try {
     const response = await api.get(`/properties/${id}/user`);
     return response.data;
-  }catch (error){
+  } catch (error) {
     handleError(error);
   }
-}
+};
 
-export const updateProperty = async (id,data) => {
+export const updateProperty = async (id, data) => {
   try {
-    const response = await api.put(`/properties/${id}`,data);
+    const response = await api.put(`/properties/${id}`, data);
     return response.data;
   } catch (error) {
     handleError(error);
   }
-}
+};
 
-export const updatePropertyStatus = async (id,data) => {
+export const updatePropertyStatus = async (id, data) => {
   try {
-    const response = await api.put(`/properties/${id}/status`,data)
+    const response = await api.put(`/properties/${id}/status`, data);
     return response.data;
   } catch (error) {
-    handleError(error)
+    handleError(error);
   }
-}
+};
 
 export const sendGallery = async (data) => {
   try {
-    const response =  await api.post("/properties/images",data ,{
+    const response = await api.post("/properties/images", data, {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        "Content-Type": "multipart/form-data",
       },
-    })
+    });
     return response.data;
-  } catch (error){
+  } catch (error) {
     handleError(error);
   }
-}
+};
 
 export const getGallery = async (id) => {
   try {
     const response = await api.get(`/properties/${id}/images`);
     return response.data;
   } catch (error) {
-    handleError(error)
+    handleError(error);
   }
-}
+};
 
 export const getUserTask = async (id) => {
   try {
     const response = await api.get(`/tasks/user/${id}`);
     return response.data;
   } catch (error) {
-    handleError(error)
+    handleError(error);
   }
-}
+};
 
 export const getTask = async (id) => {
   try {
     const response = await api.get(`/tasks/${id}`);
     return response.data;
   } catch (error) {
-    handleError(error)
+    handleError(error);
   }
-}
+};
 
 export const sendTask = async (data) => {
   try {
-    const response = await api.post(`/tasks`,data);
+    const response = await api.post(`/tasks`, data);
     return response.data;
   } catch (error) {
-    handleError(error)
+    handleError(error);
   }
-}
+};
 
 // Logout
 export const logout = () => {
@@ -273,5 +277,5 @@ export default {
   updatePropertyStatus,
   getUserTask,
   getTask,
-  sendTask
+  sendTask,
 };
