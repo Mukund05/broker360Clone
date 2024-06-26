@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import line from "../assets/line.png";
 
@@ -8,7 +8,6 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [openCurrency, setOpenCurrency] = useState(false);
   console.log(propertyData)
-
   useEffect (() => {
     if (propertyData.operation_type) {
       setIsChecked(propertyData.operation_type === "Venta");
@@ -59,7 +58,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
           <input
             placeholder="Casa"
-            className="overflow-hidden w-full"
+            className="overflow-hidden w-full focus:outline-none"
             name="type"
             value={propertyData.type}
             onChange={(e) =>
@@ -79,7 +78,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
           <input
             placeholder="Anuncio"
-            className=" overflow-hidden w-full"
+            className=" overflow-hidden w-full focus:outline-none"
             name="ad_type"
             value={propertyData.ad_type}
             onChange={(e) =>
@@ -98,7 +97,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
           <textarea
             placeholder="Descripción"
-            className=" overflow-hidden w-full"
+            className=" overflow-hidden w-full focus:outline-none"
             rows={6}
             col={20}
             name="ad_desc"
@@ -242,7 +241,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
           <input
             placeholder="Ninguno"
-            className=" overflow-hidden w-full"
+            className=" overflow-hidden w-full focus:outline-none"
             name="bedroom"
             value={propertyData.bedroom}
             onChange={(e) =>
@@ -262,7 +261,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
           <input
             placeholder="Ninguno"
-            className=" overflow-hidden w-full"
+            className=" overflow-hidden w-full focus:outline-none"
             name="bathrooms"
             value={propertyData.bathrooms}
             onChange={(e) =>
@@ -282,7 +281,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
           <input
             placeholder="Ninguno"
-            className=" overflow-hidden w-full"
+            className=" overflow-hidden w-full focus:outline-none"
             name="half_bath"
             value={propertyData.half_bath}
             onChange={(e) =>
@@ -310,7 +309,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
             <div className="p-2  flex justify-between w-full sm:w-3/4 border border-[#8692A6] rounded-md">
               <input
                 placeholder="Ninguno"
-                className=" overflow-hidden text-xs w-full"
+                className=" overflow-hidden text-xs w-full focus:outline-none"
                 name="parking_lots"
                 value={propertyData.parking_lots}
                 onChange={(e) =>
@@ -330,7 +329,10 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
               </span>
             </div>
             <div className="p-2  flex justify-between w-full sm:w-3/4 border border-[#8692A6] rounded-md text-xs">
-              <input placeholder="Ninguno" className=" overflow-hidden " />
+              <input
+                placeholder="Ninguno"
+                className=" overflow-hidden focus:outline-none"
+              />
               <KeyboardArrowDownIcon className="text-[#686868]" />
             </div>
           </div>
@@ -346,7 +348,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
         <div className="p-2 px-4 flex justify-between w-3/4 sm:w-2/5 border border-[#8692A6] rounded-md">
           <input
             placeholder=""
-            className=" overflow-hidden w-full"
+            className=" overflow-hidden w-full focus:outline-none"
             name="construction"
             value={propertyData.construction}
             onChange={(e) =>
@@ -369,7 +371,10 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
           <span className="text-red-600"></span>
         </div>
         <div className="p-2 px-4 flex justify-between w-3/4 sm:w-2/5 border border-[#8692A6] rounded-md">
-          <input placeholder="" className=" overflow-hidden w-full" />
+          <input
+            placeholder=""
+            className=" overflow-hidden w-full focus:outline-none"
+          />
           <span className="bg-[#E0E0E0] rounded-md p-2 px-6 font-semibold text-sm sm:text-md">
             m2
           </span>
@@ -385,7 +390,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
         <div className="p-2 px-4 flex justify-between w-full  sm:w-2/3 border border-[#8692A6] rounded-md">
           <input
             placeholder="Ninguno"
-            className=" overflow-hidden w-full"
+            className=" overflow-hidden w-full focus:outline-none"
             name="year_construction"
             value={propertyData.year_construction}
             onChange={(e) =>
@@ -408,7 +413,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
           <input
             placeholder="Ninguno"
-            className=" overflow-hidden w-full"
+            className=" overflow-hidden w-full focus:outline-none"
             name="number_plants"
             value={propertyData.number_plants}
             onChange={(e) =>
@@ -431,7 +436,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
           <input
             placeholder="Ninguno"
-            className=" overflow-hidden w-full"
+            className=" overflow-hidden w-full focus:outline-none"
             name="number_floors"
             value={propertyData.number_floors}
             onChange={(e) =>
@@ -454,7 +459,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
           <input
             placeholder="Ninguno"
-            className=" overflow-hidden w-full"
+            className=" overflow-hidden w-full focus:outline-none"
             name="monthly_maintence"
             value={propertyData.monthly_maintence}
             onChange={(e) =>
@@ -477,7 +482,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
           <input
             placeholder="Ninguno"
-            className=" overflow-hidden w-full"
+            className=" overflow-hidden w-full focus:outline-none"
             name="internal_key"
             value={propertyData.internal_key}
             onChange={(e) =>
@@ -499,7 +504,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
         <div className="p-2 px-4 flex justify-between w-full sm:w-2/3 border border-[#8692A6] rounded-md">
           <input
             placeholder="Ninguno"
-            className=" overflow-hidden w-full"
+            className=" overflow-hidden w-full focus:outline-none"
             name="key_code"
             value={propertyData.key_code}
             onChange={(e) =>

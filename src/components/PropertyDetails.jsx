@@ -156,21 +156,30 @@ const PropertyDetails = () => {
             Recordatorio
           </span>
           <input
-            className="p-3 rounded-md border-[#8692A6] border w-full"
+            className="p-3 rounded-md border-[#8692A6] border w-full focus:outline-none"
             placeholder="Agregar descripción"
           />
           <div className="flex justify-between gap-4 font-bold items-center">
             <QueryBuilderIcon className="w-8 h-8" />
             <div className="flex  justify-between p-2 rounded-md border-[#6E6E70] border w-1/3">
-              <input className="flex  w-1/2" placeholder="DD" />
+              <input
+                className="flex  w-1/2  focus:outline-none"
+                placeholder="DD"
+              />
               <KeyboardArrowDownIcon className="flex" />
             </div>
             <div className="flex  justify-between p-2 rounded-md border-[#6E6E70] border w-1/3">
-              <input className="flex  w-1/2" placeholder="MM" />
+              <input
+                className="flex  focus:outline-none  w-1/2"
+                placeholder="MM"
+              />
               <KeyboardArrowDownIcon className="flex" />
             </div>
             <div className="flex  justify-between p-2 rounded-md border-[#6E6E70] border w-1/3">
-              <input className="flex  w-1/2" placeholder="AAAA" />
+              <input
+                className="flex   focus:outline-none w-1/2"
+                placeholder="AAAA"
+              />
               <KeyboardArrowDownIcon className="flex" />
             </div>
           </div>

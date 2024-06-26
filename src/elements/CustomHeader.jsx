@@ -20,7 +20,7 @@ const CustomHeader = ({ index }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [arrowUp, setArrowUp] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [searchqry,setSearchqry]= useState('');
+  const [searchqry, setSearchqry] = useState("");
   const { logOut } = useAuth();
   const { profile_url, name } = JSON.parse(
     localStorage.getItem("user") || null
@@ -60,12 +60,13 @@ const CustomHeader = ({ index }) => {
     }
   };
 
-  const handleSearch = () => {
-    if (searchqry === "") {
-      alert("Search Field Cannot be Empty!");
+  const handleSearch =  () => {
+    if  (searchqry  ===  "") {
+      alert("Search Field Cannot be Empty!");;
       return;
     }
     navigate(`/view-properties?search=${searchqry}`);
+  };
   };
 
   const Modal = () => {
@@ -97,7 +98,7 @@ const CustomHeader = ({ index }) => {
 
   return (
     <div className="bg-white z-30 relative">
-      <div className="relative top-0 left-0 w-full flex justify-between p-4 z-10">
+      <div className="relative top-0 left-0 w-full flex justify-between pt-4 px-4 z-10">
         <Link to="/">
           <img src={logo} alt="error loading " className="w-32 sm:w-fit" />
         </Link>
@@ -297,18 +298,28 @@ const CustomHeader = ({ index }) => {
           )}
         </div>
       </div>
-      <div className="flex justify-center mt-4">
-        <input
-          type="text"
-          placeholder="Buscar"
-          className="px-4 py-2 border rounded-l-md"
-          value={searchqry}
-          onChange={(e)=>setSearchqry(e.target.value)}
-        />
-        <button className="bg-[#FF9203] text-white px-4 py-2 rounded-r-md" onClick={handleSearch}>
-          Buscar
-        </button>
-        <button className="ml-2 bg-[#011B4E] text-white px-4 py-2 rounded-md" onClick={() => navigate("/my-properties/add-property/property-details")} >
+      <div className="flex justify-center mb-4">
+        <div className="w-2/4">
+          <input
+            type="text"
+            placeholder="Buscar"
+            className="px-4 py-2 border rounded-l-md w-4/5"
+            value={searchqry}
+            onChange={(e) => setSearchqry(e.target.value)}
+          />
+          <button
+            className="bg-[#FF9203] text-white px-4 py-2 ml-2 rounded"
+            onClick={handleSearch}
+          >
+            Buscar
+          </button>
+        </div>
+        <button
+          className="ml-2 bg-[#011B4E] text-white px-4 py-2 rounded-md"
+          onClick={() =>
+            navigate("/my-properties/add-property/property-details")
+          }
+        >
           Agregar propiedad
         </button>
       </div>

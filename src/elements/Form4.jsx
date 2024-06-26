@@ -58,7 +58,7 @@ const Form4 = ({ propertyData, onFormDataChange }) => {
         <div className="p-2 px-4 flex justify-between w-1/3 sm:w-1/6 border border-[#8692A6] rounded-md">
           <input
             placeholder="5"
-            className=" overflow-hidden w-full  "
+            className=" overflow-hidden w-full focus:outline-none "
             name="commission_percent"
             value={propertyData.commission_percent}
             onChange={(e) =>
