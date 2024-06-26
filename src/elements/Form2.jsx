@@ -116,7 +116,7 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
           <div className="p-2 px-4 flex justify-between w-2/3 border border-[#8692A6] rounded-md">
             <input
               placeholder="Calle"
-              className="overflow-hidden w-full"
+              className="overflow-hidden w-full focus:outline-none"
               name="street"
               value={propertyData.street}
               onChange={(e) =>
@@ -125,13 +125,23 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
             />
           </div>
           <div className="p-2 px-4 flex justify-between w-2/3 border border-[#8692A6] rounded-md">
-            <input placeholder="Número" className="overflow-hidden w-full" />
+            <input
+              placeholder="Número"
+              className="overflow-hidden w-full focus:outline-none"
+            />
           </div>
           <div className="p-2 px-4 flex justify-between w-2/3 border border-[#8692A6] rounded-md">
             <input
               placeholder="Interior"
-              className="overflow-hidden w-full"
+              className="overflow-hidden w-full focus:outline-none"
               name=""
+
+              // onChange={(e) =>
+              //   onFormDataChange({
+              //     ...propertyData,
+              //     corner_with: e.target.value,
+              //   })
+              // }
             />
           </div>
         </div>
@@ -146,7 +156,7 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
           <input
             type="text"
             placeholder="Ninguno"
-            className="overflow-hidden w-full"
+            className="overflow-hidden w-full focus:outline-none"
             name="corner_with"
             value={propertyData.corner_with}
             onChange={(e) =>
@@ -165,7 +175,7 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
           <input
             type="number"
             placeholder="Ninguno"
-            className="overflow-hidden w-full"
+            className="overflow-hidden w-full focus:outline-none"
             name="postal_code"
             value={propertyData.postal_code}
             onChange={(e) =>

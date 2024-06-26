@@ -37,13 +37,12 @@ const Form3 = ({ propertyData, onFormDataChange }) => {
           onChange={handleCheckboxChange}
           style={{
             appearance: "none",
-            width: "0.6rem",
-            height: "0.6rem",
+            width: "1.5rem",
+            height: "1.5rem",
             position: "relative",
-            marginRight: "16px",
             cursor: "pointer",
           }}
-          className="custom-checkbox"
+          className="custom-checkbox focus:outline-none"
         />
         <label className="text-[#686868] font-semibold text-md text-start text-wrap md:flex-nowrap">
           {item}
