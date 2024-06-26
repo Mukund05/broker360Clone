@@ -16,7 +16,7 @@ const Properties = () => {
         const response = await Api.getProperties();
         console.log("response ", response);
         if (response.success) {
-          setPropData(response?.message);
+          setPropData(response?.data);
         } else {
           setError(response?.data);
         }
