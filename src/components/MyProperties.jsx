@@ -167,8 +167,8 @@ const MyProperties = () => {
         <span className="text-white text-xl font-semibold">Chat</span>
       </div>
       <CustomHeader index={0} />
-      <div className="flex gap-2 py-8 flex-col md:flex-row">
-        <div className="w-[90%] md:w-2/5 xl:w-1/3 border-xl flex justify-between mx-auto md:px-0">
+      <div className="flex gap-2 py-8 flex-col md:flex-row mx-4">
+        <div className="w-[90%] md:w-1/5 xl:w-3/6 border-xl flex justify-between md:px-0">
           <div className="overflow-hidden flex justify-end w-full">
             <iframe
               src={mapSrc}
