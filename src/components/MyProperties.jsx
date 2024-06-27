@@ -153,7 +153,7 @@ const MyProperties = () => {
   };
 
   return (
-    <div className="bg-[#eff6ff] relative">
+    <div className="relative">
       <div
         className="z-40 fixed bottom-4 right-10 bg-[#002F6D] flex gap-2 justify-center items-center px-4 p-2 rounded-md cursor-pointer"
         onClick={() => setModal(!modal)}
@@ -167,7 +167,7 @@ const MyProperties = () => {
         <span className="text-white text-xl font-semibold">Chat</span>
       </div>
       <CustomHeader index={0} />
-      <div className="flex gap-2 py-8 flex-col md:flex-row mx-4">
+      <div className="bg-[#eff6ff] flex gap-2 py-3 flex-col md:flex-row px-4">
         <div className="w-[90%] md:w-1/5 xl:w-3/6 border-xl flex justify-between md:px-0">
           <div className="overflow-hidden flex justify-end w-full">
             <iframe
@@ -216,7 +216,7 @@ const MyProperties = () => {
               Tipo de propiedad
               <KeyboardArrowUpIcon className="text-gray-500" />
             </div>
-            <div className="flex justify-start text-[#6E6E70] gap-x-2 sm:gap-x-4">
+            {/* <div className="flex justify-start text-[#6E6E70] gap-x-2 sm:gap-x-4">
               <button
                 className="rounded-xl py-3 sm:px-4 px-4 text-white bg-[#002F6D] text-xs sm:text-sm flex justify-center items-center"
                 onClick={() => handleFilterChange("order", "priceAsc")}
@@ -224,7 +224,7 @@ const MyProperties = () => {
                 <span className="flex justify-center items-center">Ordenar</span>
                 <KeyboardArrowUpIcon className="text-white" />
               </button>
-            </div>
+            </div> */}
           </div>
           <div className="border-t border-[#6E6E70] my-1"></div>
 
@@ -235,7 +235,7 @@ const MyProperties = () => {
                 : "Cargando..."}
             </span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-8 items-center w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center w-full">
             {sortedProperties ? (
               sortedProperties.map((property, index) => (
                 <PropertyCard

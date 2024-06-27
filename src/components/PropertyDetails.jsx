@@ -47,7 +47,7 @@ const PropertyDetails = () => {
     const fetchPropertyData = async () => {
       try {
         const response = await Api.getCurrentProperty(id); // Replace with your API endpoint
-        setPropertyData(response.message);
+        setPropertyData(response.data);
         // console.log(response.message);
       } catch (error) {
         console.error("Error fetching property data:", error);
@@ -243,11 +243,11 @@ const PropertyDetails = () => {
   };
 
   return (
-    <div className="bg-[#EFF6FF]">
+    <div>
       <CustomHeader index={0} />
       <ToastContainer className="w-96" />
 
-      <div className="mb-12">
+      <div className="mb-12 bg-[#EFF6FF]">
         <Link
           onClick={goBack}
           className="inline-flex justify-start text-[#011B4E] px-8 py-4 gap-3"

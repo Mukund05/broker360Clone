@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import line from "../assets/line.png";
 
@@ -8,7 +8,7 @@ const Form1 = ({ propertyData, onFormDataChange }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [openCurrency, setOpenCurrency] = useState(false);
   console.log(propertyData)
-  useEffect (() => {
+  useEffect(() => {
     if (propertyData.operation_type) {
       setIsChecked(propertyData.operation_type === "Venta");
     }

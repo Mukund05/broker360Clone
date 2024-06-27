@@ -60,13 +60,12 @@ const CustomHeader = ({ index }) => {
     }
   };
 
-  const handleSearch =  () => {
-    if  (searchqry  ===  "") {
-      alert("Search Field Cannot be Empty!");;
+  const handleSearch = () => {
+    if (searchqry === "") {
+      alert("Search Field Cannot be Empty!");
       return;
     }
     navigate(`/view-properties?search=${searchqry}`);
-  };
   };
 
   const Modal = () => {

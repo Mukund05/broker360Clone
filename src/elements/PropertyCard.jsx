@@ -36,18 +36,23 @@ const PropertyCard = ({ property }) => {
   return (
     <div className="min-w-80 sm:min-w-80 md:w-80 bg-white border border-gray-200 rounded-lg shadow-lg transition-transform transform hover:scale-105">
       <div className="relative">
-        <div
-          className="absolute shadow-2xl rounded-full p-1 left-1 text-yellow-500 cursor-pointer z-10 top-1/2 transform -translate-y-1/2"
-          onClick={handlePrev}
-        >
-          <KeyboardArrowLeftIcon className="text-2xl" />
-        </div>
-        <div
-          className="absolute shadow-2xl rounded-full p-1 right-1 text-yellow-500 cursor-pointer z-10 top-1/2 transform -translate-y-1/2"
-          onClick={handleNext}
-        >
-          <ChevronRightIcon className="text-2xl" />
-        </div>
+        {property.images.length > 0 && (
+          <>
+            <div
+              className="absolute shadow-2xl rounded-full p-1 left-1 text-yellow-500 cursor-pointer z-10 top-1/2 transform -translate-y-1/2"
+              onClick={handlePrev}
+            >
+              <KeyboardArrowLeftIcon className="text-2xl" />
+            </div>
+            <div
+              className="absolute shadow-2xl rounded-full p-1 right-1 text-yellow-500 cursor-pointer z-10 top-1/2 transform -translate-y-1/2"
+              onClick={handleNext}
+            >
+              <ChevronRightIcon className="text-2xl" />
+            </div>
+          </>
+        )}
+
         <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1 z-10">
           {property.images.map((_, index) => (
             <div
@@ -59,6 +64,7 @@ const PropertyCard = ({ property }) => {
             ></div>
           ))}
         </div>
+
         <div className="custom-container scroll-smooth flex relative h-60">
           {(property.images.length > 0 ? property.images : [propertyImg]).map(
             (img, index) => (
@@ -84,11 +90,13 @@ const PropertyCard = ({ property }) => {
         <div className="bg-[#bdc2c6] p-1 absolute bottom-3 right-3 rounded-full">
           <FavoriteBorderIcon className="text-[#011B4E]" />
         </div>
+
         <button className="text-white bg-[#6E6E70] text-xs md:text-sm rounded-md absolute top-3 left-3 cursor-pointer font-semibold p-1 md:p-2">
           {capitalizeFirstLetter(property?.ad_type) || "Tipo de anuncio"}
         </button>
         <button className="text-white bg-[#011B4E] text-xs md:text-sm rounded-md absolute top-3 right-3 cursor-pointer font-semibold p-1 md:p-2">
-          {capitalizeFirstLetter(property?.operation_type) || "Tipo de operación"}
+          {capitalizeFirstLetter(property?.operation_type) ||
+            "Tipo de operación"}
         </button>
       </div>
       <div
@@ -111,7 +119,8 @@ const PropertyCard = ({ property }) => {
           {capitalizeFirstLetter(property?.ad_type) || "Encabezado"}
         </span>
         <span className="text-[#6E6E70] text-sm md:text-md">
-          {capitalizeFirstLetter(property?.ad_desc) || "Descripción de la propiedad"}
+          {capitalizeFirstLetter(property?.ad_desc) ||
+            "Descripción de la propiedad"}
         </span>
         <div className="flex gap-4 items-center text-[#6D737A]">
           <div className="flex gap-1 items-center">

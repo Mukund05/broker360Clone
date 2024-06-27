@@ -64,12 +64,11 @@ const Properties = () => {
   }, []);
 
   return (
-    <div className="bg-[#eff6ff]">
+    <div >
       <CustomHeader index={1} />
-      <div className="py-4">
+      <div className="py-4 bg-[#eff6ff]">
         <div className="flex gap-1 flex-col">
-          <div className="flex justify-between md:w-1/2 pr-10"></div>
-          <div className="flex flex-col md:flex-row gap-x-4 my-6 gap-y-8">
+          <div className="bg-[#eff6ff] flex gap-2 py-3 flex-col md:flex-row px-4">
             <div className="w-[90%] md:w-1/2 border-xl flex justify-between mx-auto">
               <div className="overflow-hidden flex justify-end w-full">
                 <iframe
@@ -80,7 +79,7 @@ const Properties = () => {
                 ></iframe>
               </div>
             </div>
-            <div className="md:w-3/4 flex flex-col gap-y-2 gap-x-4 pe-8 px-4">
+            <div className="px-4 py-4 flex flex-col gap-y-2">
               <div className="flex flex-wrap gap-y-4 justify-start text-[#6E6E70] gap-x-2 sm:gap-x-4">
                 <div className="border border-[#6E6E70] rounded-lg p-2 bg-white relative w-fit text-xs sm:text-sm flex justify-between flex-col xs:flex-row px-5 cursor-pointer hover:bg-[#011b4e] hover:text-white">
                   <span>Ubicación</span>
@@ -106,7 +105,7 @@ const Properties = () => {
                     : "Cargando..."}
                 </span>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-8 items-center w-full">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center w-full">
                 {propData ? (
                   propData?.map((property, index) => (
                     <PropertyCard
