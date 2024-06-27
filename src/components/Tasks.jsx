@@ -7,6 +7,7 @@ import Api from "../Api";
 
 const Tasks = () => {
   const [showModal, setShowModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
   const [modalData, setModalData] = useState({
     assignment: "",
     date: new Date(),
@@ -17,12 +18,13 @@ const Tasks = () => {
   });
   const [tasks, setTasks] = useState([]);
   const [errors, setErrors] = useState({});
+  const [activeTask, setActiveTask] = useState(null);
 
   const user = JSON.parse(localStorage.getItem("user"));
 
   const fetchTasks = useCallback(async () => {
     if (user) {
-        setModalData((prevData) => ({ ...prevData, assignedTo: user.name }));
+      setModalData((prevData) => ({ ...prevData, assignedTo: user.name }));
       try {
         const response = await Api.getUserTask(user.id);
         if (response.success) setTasks(response.data);
@@ -30,7 +32,7 @@ const Tasks = () => {
         console.log("Error while fetching tasks:", error);
       }
     }
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     fetchTasks();
@@ -51,6 +53,8 @@ const Tasks = () => {
 
   const handleCloseClick = () => {
     setShowModal(false);
+    setEditModal(false);
+    setActiveTask(null);
   };
 
   const validateModalData = () => {
@@ -60,7 +64,7 @@ const Tasks = () => {
       newErrors.deliveryTime = "Delivery time is required";
     if (!modalData.assignedTo) newErrors.assignedTo = "Assigned to is required";
     if (!modalData.category) newErrors.category = "Category is required";
-    if (!modalData.link ) newErrors.link = "Link is Required";
+    if (!modalData.link) newErrors.link = "Link is Required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -81,13 +85,60 @@ const Tasks = () => {
         const response = await Api.sendTask(data);
         if (response.success) {
           setShowModal(false);
-          // Fetch tasks immediately after creating a new task
-          const updatedTasks = await Api.getUserTask(user.id);
-          if (updatedTasks.success) setTasks(updatedTasks.data);
+          fetchTasks();
         }
       } catch (error) {
         console.log("Error creating task:", error);
       }
+    }
+  };
+
+  const handleEditClick = (task) => {
+    setModalData({
+      assignment: task.desc,
+      date: new Date(task.date),
+      deliveryTime: task.time,
+      assignedTo: task.assigned_to,
+      category: task.category,
+      link: task.link,
+    });
+    setEditModal(true);
+    setActiveTask(task);
+  };
+
+  const handleUpdateClick = async () => {
+    if (validateModalData()) {
+      const formattedDate = modalData.date.toISOString().slice(0, 10);
+      const data = {
+        desc: modalData.assignment,
+        date: formattedDate,
+        time: modalData.deliveryTime,
+        assigned_to: 1, // Change this as per your logic
+        category: modalData.category,
+        link: modalData.link,
+      };
+
+      try {
+        const response = await Api.updateTask(activeTask.id, data);
+        if (response.success) {
+          setEditModal(false);
+          setActiveTask(null);
+          fetchTasks();
+        }
+      } catch (error) {
+        console.log("Error updating task:", error);
+      }
+    }
+  };
+
+  const handleDeleteClick = async (taskId) => {
+    try {
+      const response = await Api.removeTask(taskId);
+      if (response.success) {
+        fetchTasks();
+      }
+    } catch (error) {
+      console.log("Error deleting task:", error);
     }
   };
 
@@ -123,9 +174,30 @@ const Tasks = () => {
           {tasks.length > 0 &&
             tasks.map((item, index) => (
               <div key={index} className="border p-4 rounded mb-2">
-                <input type="checkbox" className="mr-2" />
-                <span className="border px-2 py-1 mr-2">{item.category}</span>
-                <span>{item?.desc}</span>
+                <div
+                  onClick={() => setActiveTask(item)}
+                  className="flex items-center cursor-pointer"
+                >
+                  <input type="checkbox" className="mr-2" />
+                  <span className="border px-2 py-1 mr-2">{item.category}</span>
+                  <span>{item?.desc}</span>
+                </div>
+                {activeTask === item && (
+                  <div className="flex justify-end gap-2 mt-2">
+                    <button
+                      className="bg-yellow-500 text-white font-bold py-1 px-2 rounded"
+                      onClick={() => handleEditClick(item)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="bg-red-500 text-white font-bold py-1 px-2 rounded"
+                      onClick={() => handleDeleteClick(item.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
         </div>
@@ -225,6 +297,104 @@ const Tasks = () => {
               onClick={handleCreateClick}
             >
               Create
+            </button>
+          </div>
+        </div>
+      )}
+      {editModal && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg w-96">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-bold">Edit Task</h2>
+              <button onClick={handleCloseClick} className="text-gray-500">
+                &times;
+              </button>
+            </div>
+            <textarea
+              name="assignment"
+              placeholder="Write your assignment here"
+              value={modalData.assignment}
+              onChange={handleInputChange}
+              className="border p-2 mb-4 w-full"
+            />
+            {errors.assignment && (
+              <p className="text-red-500">{errors.assignment}</p>
+            )}
+            <div className="flex gap-4 mb-4">
+              <DatePicker
+                selected={modalData.date}
+                onChange={handleDateChange}
+                className="border p-2 w-full"
+                dateFormat="dd/MM/yyyy"
+              />
+              <select
+                name="deliveryTime"
+                value={modalData.deliveryTime}
+                onChange={handleInputChange}
+                className="border p-2 w-full"
+              >
+                <option value="">Delivery time</option>
+                {timeOptions.map((time) => (
+                  <option key={time} value={time}>
+                    {time}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {errors.deliveryTime && (
+              <p className="text-red-500">{errors.deliveryTime}</p>
+            )}
+            <div className="mb-4">
+              <label className="block mb-2">Assigned to</label>
+              <input
+                type="text"
+                name="assignedTo"
+                value={user.name}
+                onChange={handleInputChange}
+                className="border p-2 w-full"
+                disabled
+              />
+            </div>
+            {errors.assignedTo && (
+              <p className="text-red-500">{errors.assignedTo}</p>
+            )}
+            <div className="mb-4">
+              <label className="block mb-2">Category</label>
+              <select
+                name="category"
+                value={modalData.category}
+                onChange={handleInputChange}
+                className="border p-2 w-full"
+              >
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {errors.category && (
+              <p className="text-red-500">{errors.category}</p>
+            )}
+            <div className="mb-4">
+              <label className="block mb-2">Link</label>
+              <input
+                type="text"
+                name="link"
+                placeholder="Paste your link here"
+                value={modalData.link}
+                onChange={handleInputChange}
+                className="border p-2 w-full"
+              />
+            </div>
+            {errors.link && (
+              <p className="text-red-500">{errors.link}</p>
+            )}
+            <button
+              className="bg-blue-500 text-white font-bold py-2 px-4 rounded w-full"
+              onClick={handleUpdateClick}
+            >
+              Update
             </button>
           </div>
         </div>

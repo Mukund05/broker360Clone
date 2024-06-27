@@ -245,6 +245,24 @@ export const sendTask = async (data) => {
   }
 };
 
+export const updateTask = async (id,data) => {
+  try {
+    const response = await api.put(`/tasks/${id}`,data);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+export const removeTask = async (id) => {
+  try {
+    const response = await api.delete(`/tasks/${id}`);
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+}
+
 // Logout
 export const logout = () => {
   localStorage.removeItem("token");
@@ -278,4 +296,6 @@ export default {
   getUserTask,
   getTask,
   sendTask,
+  removeTask,
+  updateTask
 };
