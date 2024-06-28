@@ -57,7 +57,7 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
   const trimAddress = (address, keyword) => {
     const parts = address.split(",");
     const index = parts.findIndex(
-      (part) => part.trim().toLowerCase() === keyword.toLowerCase()
+      (part) => part?.trim()?.toLowerCase() === keyword?.toLowerCase()
     );
     if (index !== -1) {
       return parts.slice(0, index + 1).join(", ");
@@ -77,7 +77,7 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
         }`
       );
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       if (data.status === "OK") {
         const address = data.results[0].formatted_address;
         // Extract components from the address
