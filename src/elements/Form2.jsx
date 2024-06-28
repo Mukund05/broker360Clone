@@ -44,7 +44,9 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
       initMap();
     } else {
       const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_API}&callback=initMap`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${
+        import.meta.env.VITE_GOOGLE_API
+      }&callback=initMap`;
       script.async = true;
       script.defer = true;
       script.onload = initMap;
@@ -54,7 +56,9 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
 
   const trimAddress = (address, keyword) => {
     const parts = address.split(",");
-    const index = parts.findIndex(part => part.trim().toLowerCase() === keyword.toLowerCase());
+    const index = parts.findIndex(
+      (part) => part.trim().toLowerCase() === keyword.toLowerCase()
+    );
     if (index !== -1) {
       return parts.slice(0, index + 1).join(", ");
     }
@@ -68,16 +72,21 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
     // Fetch address using Google Geolocation API
     try {
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${import.meta.env.VITE_GOOGLE_API}`
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${
+          import.meta.env.VITE_GOOGLE_API
+        }`
       );
       const data = await response.json();
       console.log(data);
       if (data.status === "OK") {
         const address = data.results[0].formatted_address;
         // Extract components from the address
-        const street = trimAddress(address,data.results[0].address_components.find(
-          (component) => component.types.includes("sublocality_level_1")
-        )?.long_name)
+        const street = trimAddress(
+          address,
+          data.results[0].address_components.find((component) =>
+            component.types.includes("sublocality_level_1")
+          )?.long_name
+        );
         const postal_code = data.results[0].address_components.find(
           (component) => component.types.includes("postal_code")
         )?.long_name;
@@ -195,10 +204,7 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
         </div>
       </div>
 
-      <div className="flex justify-center gap-2 items-center flex-col sm:flex-row">
-        <div className="w-full sm:w-1/3 flex sm:justify-end">
-          <span className="text-[#686868] text-sm sm:text-md font-bold"></span>
-        </div>
+      <div className="flex justify-end gap-2 items-center flex-col sm:flex-row">
         <div className="flex justify-between w-full sm:w-2/3 rounded-md">
           <div
             ref={mapRef}
@@ -207,12 +213,12 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
           ></div>
         </div>
       </div>
-      <div className="flex justify-center gap-2 items-center flex-col sm:flex-row">
+      <div className="flex justify-end gap-2 items-center flex-col sm:flex-row">
         <button
           onClick={handleAddLocation}
           className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg"
         >
-          Add Location
+          Add Current Location
         </button>
       </div>
     </div>
