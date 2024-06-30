@@ -108,12 +108,29 @@ const MessageGateway = () => {
   const [subject, setSubject] = useState("");
   const [messageContent, setMessageContent] = useState("");
 
+  // State for mail data
+  const [mails, setMails] = useState([]);
+  const [selectedMail, setSelectedMail] = useState(null); // New state for selected mail
+
   const notify = () =>
     toast.success(
       <div>
         <h4 className="text-green-500">El mensaje fue enviado exitosamente</h4>
       </div>
     );
+
+  useEffect(() => {
+    const fetchMails = async () => {
+      try {
+        const response = await Api.fetchMail();
+        setMails(response.data); // Adjust according to your API response structure
+      } catch (error) {
+        console.error("Error fetching mails:", error);
+      }
+    };
+
+    fetchMails();
+  }, []);
 
   // Function to handle hover for a specific item
   const handleMouseEnter = (index) => {
@@ -124,8 +141,9 @@ const MessageGateway = () => {
     setHoveredItem(null);
   };
 
-  const handleClick = () => {
-    setModal(!modal);
+  const handleClick = (mail) => {
+    setSelectedMail(mail);
+    setModal(true);
   };
 
   const openChat = () => {
@@ -158,13 +176,17 @@ const MessageGateway = () => {
       toast.error("Error sending message");
     }
   };
-  
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric' }).format(date);
+  };
 
   return (
     <div className="bg-[#eff6ff]">
       <CustomHeader index={3} />
       <div className="p-6">
-        <div className="flex justify-start gap-4 flex-wrap text-[#6E6E70] sm:gap-8 ">
+        <div className="flex justify-start gap-4 flex-wrap text-[#6E6E70] sm:gap-8">
           <span
             className={`${
               active ? "bg-[#052682] text-white" : "bg-white text-[#6E6E70]"
@@ -185,7 +207,7 @@ const MessageGateway = () => {
           <div className="bg-white rounded-xl p-3 sm:p-4 w-fit lg:w-1/4 h-fit">
             <div className="rounded-full flex justify-between bg-[#E5B219] p-2 px-3 sm:p-4 sm:px-6 font-semibold text-white text-sm sm:text-lg">
               <span className="">Buzón de entrada</span>
-              <span className="">15</span>
+              <span className="">{mails.length}</span>
             </div>
           </div>
           <div className="flex flex-col bg-white w-full lg:w-4/5 text-sm shadow-sm">
@@ -194,11 +216,11 @@ const MessageGateway = () => {
                 <div className="border-b border-[#EDEFF1] flex justify-between items-center">
                   <KeyboardBackspaceIcon
                     className="m-5 cursor-pointer"
-                    onClick={handleClick}
+                    onClick={() => setModal(false)}
                   />
                   <div className="flex gap-5 m-5">
                     <span className="text-[#969696] text-sm font-semibold">
-                      1–15 de 15
+                      1–{mails.length} de {mails.length}
                     </span>
                     <div className="flex gap-4 items-center">
                       <img src={previous} className="h-fit cursor-pointer" />
@@ -206,48 +228,46 @@ const MessageGateway = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-5 p-5 items-center">
-                  <img
-                    className="flex justify-center items-center h-fit"
-                    src={avatar}
-                  />
-                  <div className="flex flex-col gap-10 justify-between ">
-                    <div className="flex gap-4 items-center">
-                      <div className="flex justify-between">
-                        <span className="text-[#011b4e] font-bold text-lg sm:text-xl">
-                          Contacto por propiedad
+                {selectedMail && (
+                  <div className="flex flex-col sm:flex-row gap-5 p-5 items-center">
+                    <img
+                      className="flex justify-center items-center h-fit"
+                      src={avatar}
+                    />
+                    <div className="flex flex-col gap-10 justify-between ">
+                      <div className="flex gap-4 items-center">
+                        <div className="flex justify-between">
+                          <span className="text-[#011b4e] font-bold text-lg sm:text-xl">
+                            {selectedMail.subject}
+                          </span>
+                        </div>
+                        <img src={forward} className="w-4 h-fit" />
+                        <span className="p-1 rounded-md bg-[#F2F2F2] flex items-center gap-3 cursor-pointer">
+                          Buzón de entrada <img src={cancel} className="h-fit" />
                         </span>
                       </div>
-                      <img src={forward} className="w-4 h-fit" />
-                      <span className="p-1 rounded-md bg-[#F2F2F2] flex items-center gap-3 cursor-pointer">
-                        Buzón de entrada <img src={cancel} className="h-fit" />
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <div className="text-[#011b4e] font-bold text-sm sm:text-lg">
-                        Inmobiliaria Mex
+                      <div className="flex justify-between">
+                        <div className="text-[#011b4e] font-bold text-sm sm:text-lg">
+                          {selectedMail.to}
+                        </div>
+                        <span className="text-[#969696] text-sm font-semibold">
+                          {formatDate(selectedMail.created_at)}
+                        </span>
                       </div>
-                      <span className="text-[#969696] text-sm font-semibold">
-                        9:14 AM (8 hours ago)
-                      </span>
-                    </div>
-                    <div className="text-start text-xs sm:text-sm">
-                      Aliqua id fugiat nostrud irure ex duis ea quis id quis ad
-                      et. Sunt qui esse pariatur duis deserunt mollit dolore
-                      cillum minim tempor enim. Elit aute irure tempor cupidatat
-                      incididunt sint deserunt ut voluptate aute id deserunt
-                      nisi.
+                      <div className="text-start text-xs sm:text-sm">
+                        {selectedMail.message}
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             ) : (
-              [...Array(11)].map((_, index) => (
+              mails.map((mail, index) => (
                 <div
-                  key={index}
+                  key={mail.id}
                   onMouseEnter={() => handleMouseEnter(index)}
                   onMouseLeave={handleMouseLeave}
-                  onClick={handleClick}
+                  onClick={() => handleClick(mail)}
                 >
                   <div
                     className={`flex justify-between p-4 cursor-pointer hover:bg-[#D9D9D9] border border-[#D9D9D9] ${
@@ -257,14 +277,16 @@ const MessageGateway = () => {
                     <div className="flex gap-2 justify-between w-full sm:w-3/5 text-[#6E6E70]">
                       <input className="bg-[#D9D9D9]" type="checkbox" />
                       <span className="font-semibold text-xs xs:text-sm">
-                        Inmobiliaria Mex
+                        {mail.to}
                       </span>
                       <span className="font-semibold text-xs xs:text-sm">
-                        Interesado en la propiedad publicada
+                        {mail.subject}
                       </span>
                     </div>
                     <div className="hidden sm:flex justify-end w-2/5 text-black font-bold">
-                      {index === hoveredItem ? null : <span>Aug 15</span>}
+                      {index === hoveredItem ? null : (
+                        <span>{formatDate(mail.created_at)}</span>
+                      )}
                       <div
                         className={`flex gap-2 items-center ${
                           hoveredItem === index ? "block" : "hidden"
@@ -277,10 +299,7 @@ const MessageGateway = () => {
                           className="text-[#707070] w-4 h-4"
                         />
                         <img src={message} className="text-[#707070] w-4 h-4" />
-                        <img
-                          src={clock}
-                          className="text-[#707070] w-4 h-4"
-                        />
+                        <img src={clock} className="text-[#707070] w-4 h-4" />
                       </div>
                     </div>
                   </div>

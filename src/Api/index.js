@@ -281,6 +281,15 @@ export const deleteMail = async (id) => {
   }
 }
 
+export const fetchMail = async () => {
+  try {
+    const response= await api.get("mails");
+    return response.data;
+  } catch (error) {
+    handleError(error)
+  }
+}
+
 // Logout
 export const logout = () => {
   localStorage.removeItem("token");
@@ -317,5 +326,6 @@ export default {
   removeTask,
   updateTask,
   sendMail,
-  deleteMail
+  deleteMail,
+  fetchMail
 };
