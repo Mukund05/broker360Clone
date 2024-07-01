@@ -290,6 +290,24 @@ export const fetchMail = async () => {
   }
 }
 
+export const mycard = async () => {
+  try {
+    const response = await api.get("cards");
+    return response.data;
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+export const saveCard = async (data) => {
+  try {
+    const response = await api.post("cards",data);
+    return response.data;
+  } catch (error) {
+    handleError(error)
+  }
+}
+
 // Logout
 export const logout = () => {
   localStorage.removeItem("token");
@@ -327,5 +345,7 @@ export default {
   updateTask,
   sendMail,
   deleteMail,
-  fetchMail
+  fetchMail,
+  mycard,
+  saveCard
 };
