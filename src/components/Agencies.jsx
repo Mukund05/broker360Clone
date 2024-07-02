@@ -32,7 +32,7 @@ const Agencies = () => {
     const fetchUser = async () => {
       try {
         const response = await Api.getUsers();
-        console.log(response);
+        // console.log(response);
         if (response.success) setUser(response.data);
       } catch (error) {
         console.log(error);

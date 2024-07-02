@@ -25,7 +25,7 @@ const MyProperties = () => {
 
   useEffect(() => {
     const fetchProperty = async () => {
-      const user = JSON.parse(localStorage.getItem('user'));
+      const user = JSON.parse(localStorage.getItem("user"));
 
       try {
         const response = await API.getUserProperty(user.id);
@@ -46,7 +46,9 @@ const MyProperties = () => {
           (position) => {
             const { latitude, longitude } = position.coords;
             setMapSrc(
-              `https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_API}&q=${latitude},${longitude}`
+              `https://www.google.com/maps/embed/v1/place?key=${
+                import.meta.env.VITE_GOOGLE_API
+              }&q=${latitude},${longitude}`
             );
           },
           (error) => {
@@ -93,7 +95,9 @@ const MyProperties = () => {
   const filteredProperties = propData?.filter((property) => {
     return (
       (locationFilter ? property.location.includes(locationFilter) : true) &&
-      (operationFilter ? property.operation_type.includes(operationFilter) : true) &&
+      (operationFilter
+        ? property.operation_type.includes(operationFilter)
+        : true) &&
       (priceFilter ? property.price <= priceFilter : true) &&
       (propertyTypeFilter ? property.type.includes(propertyTypeFilter) : true)
     );

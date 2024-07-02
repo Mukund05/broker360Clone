@@ -21,19 +21,21 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
         draggable: true,
       });
 
-      map.addListener("click", (event) => {
-        const latLng = event.latLng;
-        marker.setPosition(latLng);
+      const handleLocationChange = (latLng) => {
         const latitude = latLng.lat();
         const longitude = latLng.lng();
         updateLocation(latitude, longitude);
+      };
+
+      map.addListener("click", (event) => {
+        const latLng = event.latLng;
+        marker.setPosition(latLng);
+        handleLocationChange(latLng);
       });
 
       marker.addListener("dragend", (event) => {
         const latLng = event.latLng;
-        const latitude = latLng.lat();
-        const longitude = latLng.lng();
-        updateLocation(latitude, longitude);
+        handleLocationChange(latLng);
       });
 
       setMap(map);
@@ -44,9 +46,7 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
       initMap();
     } else {
       const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${
-        import.meta.env.VITE_GOOGLE_API
-      }&callback=initMap`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_API}&callback=initMap`;
       script.async = true;
       script.defer = true;
       script.onload = initMap;
@@ -67,17 +67,15 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
 
   const updateLocation = async (latitude, longitude) => {
     const location = `${latitude},${longitude}`;
+    console.log(location);
     onFormDataChange({ ...propertyData, longitude_latitude: location });
 
     // Fetch address using Google Geolocation API
     try {
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${
-          import.meta.env.VITE_GOOGLE_API
-        }`
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${import.meta.env.VITE_GOOGLE_API}`
       );
       const data = await response.json();
-      // console.log(data);
       if (data.status === "OK") {
         const address = data.results[0].formatted_address;
         // Extract components from the address

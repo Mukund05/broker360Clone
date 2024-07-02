@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CustomHeader from "../elements/CustomHeader";
@@ -48,12 +48,15 @@ const AddPropertyData = () => {
 
   const [errors, setErrors] = useState({});
 
+  const isInitialMount = useRef(true); // Add this line
+
   useEffect(() => {
-    if (isUpdate) {
+    if (isUpdate && isInitialMount.current) {
       setPropertyData((prevData) => ({
         ...prevData,
         ...data,
       }));
+      isInitialMount.current = false; // Add this line
     }
   }, [isUpdate, data]);
 
