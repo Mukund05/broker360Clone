@@ -116,6 +116,15 @@ export const updateContact = async (id, data) => {
   }
 };
 
+export const getUsers = async () => {
+  try {
+    const response = await api.get("users");
+    return response.data;
+  } catch (error) {
+    handleError(error)
+  }
+}
+
 export const getProfile = async () => {
   try {
     const response = await api.get("/current/user");
@@ -347,5 +356,6 @@ export default {
   deleteMail,
   fetchMail,
   mycard,
-  saveCard
+  saveCard,
+  getUsers
 };
