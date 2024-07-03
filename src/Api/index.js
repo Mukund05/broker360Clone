@@ -326,6 +326,15 @@ export const saveCard = async (data) => {
   }
 }
 
+export const getCollaboration = async (id) => {
+  try {
+    const response = await api.get("/collaborations",id);
+    return response.data;
+  } catch (error) {
+    handleError(error)
+  }
+}
+
 // Logout
 export const logout = () => {
   localStorage.removeItem("token");
@@ -367,5 +376,7 @@ export default {
   mycard,
   saveCard,
   getUsers,
-  getUserByID
+  getUserByID,
+  getCollaboration,
+  
 };
