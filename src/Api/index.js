@@ -335,6 +335,15 @@ export const getCollaboration = async (id) => {
   }
 }
 
+export const collaborations = async (data) => {
+  try {
+    const response = await api.post("/collaborations/invite",data);
+    return response.data;
+  } catch (error) {
+    handleError(error)
+  }
+}
+
 // Logout
 export const logout = () => {
   localStorage.removeItem("token");
@@ -378,5 +387,5 @@ export default {
   getUsers,
   getUserByID,
   getCollaboration,
-  
+  collaborations
 };
