@@ -134,6 +134,15 @@ export const getProfile = async () => {
   }
 };
 
+export const getUserByID = async (id) => {
+  try {
+    const response = await api.get(`/users/${id}`);
+    return response.data;
+  } catch (error) {
+    handleError(error)
+  }
+}
+
 export const updateProfile = async (data, id) => {
   try {
     const response = await api.post(`/users/${id}`, data, {
@@ -357,5 +366,6 @@ export default {
   fetchMail,
   mycard,
   saveCard,
-  getUsers
+  getUsers,
+  getUserByID
 };

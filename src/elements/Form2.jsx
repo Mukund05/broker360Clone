@@ -6,6 +6,7 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
   const [map, setMap] = useState(null);
   const [marker, setMarker] = useState(null);
   const mapRef = useRef(null);
+  const updateQueue = useRef([]);
 
   useEffect(() => {
     const initMap = () => {
@@ -24,7 +25,7 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
       const handleLocationChange = (latLng) => {
         const latitude = latLng.lat();
         const longitude = latLng.lng();
-        updateLocation(latitude, longitude);
+        queueLocationUpdate(latitude, longitude);
       };
 
       map.addListener("click", (event) => {
@@ -65,10 +66,22 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
     return address; // return the full address if the keyword is not found
   };
 
-  const updateLocation = async (latitude, longitude) => {
+  const queueLocationUpdate = (latitude, longitude) => {
+    updateQueue.current.push({ latitude, longitude });
+    if (updateQueue.current.length === 1) {
+      processUpdateQueue();
+    }
+  };
+
+  const processUpdateQueue = async () => {
+    if (updateQueue.current.length === 0) {
+      return;
+    }
+
+    const { latitude, longitude } = updateQueue.current[0];
+
     const location = `${latitude},${longitude}`;
     console.log(location);
-    onFormDataChange({ ...propertyData, longitude_latitude: location });
 
     // Fetch address using Google Geolocation API
     try {
@@ -91,8 +104,10 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
         const corner_with = data.results[0].address_components.find(
           (component) => component.types.includes("administrative_area_level_1")
         )?.long_name;
+
         onFormDataChange({
           ...propertyData,
+          longitude_latitude: location,
           street: street || "",
           postal_code: postal_code || "",
           corner_with: corner_with || "",
@@ -102,6 +117,11 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
       }
     } catch (error) {
       console.error("Error fetching address:", error);
+    }
+
+    updateQueue.current.shift();
+    if (updateQueue.current.length > 0) {
+      processUpdateQueue();
     }
   };
 
@@ -113,7 +133,7 @@ const Form2 = ({ propertyData, onFormDataChange }) => {
           const latLng = new window.google.maps.LatLng(latitude, longitude);
           marker.setPosition(latLng);
           map.panTo(latLng);
-          updateLocation(latitude, longitude);
+          queueLocationUpdate(latitude, longitude);
         },
         (error) => {
           console.error("Error obtaining location:", error);

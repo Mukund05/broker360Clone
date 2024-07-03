@@ -48,15 +48,14 @@ const AddPropertyData = () => {
 
   const [errors, setErrors] = useState({});
 
-  const isInitialMount = useRef(true); // Add this line
 
   useEffect(() => {
-    if (isUpdate && isInitialMount.current) {
+    if (isUpdate) {
+      console.log("Count me in");
       setPropertyData((prevData) => ({
         ...prevData,
         ...data,
       }));
-      isInitialMount.current = false; // Add this line
     }
   }, [isUpdate, data]);
 
@@ -65,6 +64,7 @@ const AddPropertyData = () => {
   };
 
   const handleFormDataChange = (newData) => {
+    console.log("changes",newData)
     setPropertyData((prevData) => ({
       ...prevData,
       ...newData,

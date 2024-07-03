@@ -31,7 +31,7 @@ const AgencyPropertyData = () => {
 
     const fetchUserData = async () => {
       try {
-        const response = await Api.getUserData(id);
+        const response = await Api.getUserByID(id);
         if (response.success) {
           setUserData(response.data);
         } else {
