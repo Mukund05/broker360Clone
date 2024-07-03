@@ -82,12 +82,12 @@ const Agencies = () => {
   };
 
   return (
-    <div className="bg-[#eff6ff]">
+    <div className="">
       <CustomHeader index={1} />
-      <div className="p-6">
+      <div className="p-6 bg-[#eff6ff]">
         <div className="flex justify-between my-8">
           <div className="font-bold text-[#FF9203] text-lg sm:text-xl">
-            1-18 de 150 inmobiliarias
+          {user?.length > 0 ? `1-${user?.length} de ${user?.length} inmobiliarias` : 'No inmobiliarias found'}
           </div>
           <div className="flex gap-2 flex-wrap justify-end">
             <span className="bg-white p-2 items-center w-fit flex gap-3 rounded-md border-[#6E6E70] border text-sm cursor-pointer hover:bg-[#011B4E] hover:text-white">
@@ -117,7 +117,7 @@ const Agencies = () => {
               >
                 <div className="flex justify-between px-3">
                   <span className="text-[#002F6D] font-semibold text-xl ">
-                    Soluciones inmobiliarias México
+                  {agent.agency_name ? agent.agency_name : "N/A"}
                   </span>
                   <span className="text-[#ff9203] font-semibold text-[16px] text-end">
                     205 anuncios
@@ -194,7 +194,7 @@ const Agencies = () => {
                   <div className="w-1/2 flex gap-1 justify-center sm:justify-start">
                     <LanguageIcon className="text-[#0052bd]" />
                     <span className="text-[16px] font-semibold text-[#0052bd] underline">
-                      SolucionesinmobiliariasMéxico.com
+                    {agent.emails ? agent.emails : "N/A"}
                     </span>
                   </div>
                   <div className="w-1/3 flex justify-center sm:justify-end">
